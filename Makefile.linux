@@ -24,7 +24,6 @@ OBJS=	abandon.o attack.o autover.o capture.o check_out.o checkcond.o \
 	ranf.o rest.o schedule.o score.o setup.o setwarp.o \
 	shield.o snova.o srscan.o systemname.o torped.o utility.o \
 	visual.o warp.o win.o cgetc.o
-INCS=	-I/usr/include/bsd
 LIBS=	-lm -lbsd
 
 all: ${PROG}
