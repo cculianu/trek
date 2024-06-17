@@ -43,13 +43,13 @@ static char sccsid[] = "@(#)out.c	5.4 (Berkeley) 6/1/90";
 
 void out(int dev)
 {
-	register struct device	*d;
+    struct device	*d;
 
-	d = &Device[dev];
-	printf("%s reports %s ", d->person, d->name);
-	if (d->name[length(d->name) - 1] == 's')
-		printf("are");
-	else
-		printf("is");
-	printf(" damaged\n");
+    d = &Device[dev];
+    printf("%s reports %s ", d->person, d->name);
+    if (d->name[length(d->name) - 1] == 's')
+            printf("are");
+    else
+            printf("is");
+    printf(" damaged\n");
 }

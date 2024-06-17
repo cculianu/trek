@@ -56,9 +56,9 @@ static char sccsid[] = "@(#)shield.c	5.5 (Berkeley) 6/1/90";
 
 struct cvntab Udtab[] =
 {
-        { "u", "p", (void (*)(int))1,		0 },
-        { "d", "own",		   0,		0 },
-        { 0, 0, 0, 0},
+    { "u", "p",             {(cvntab_fn)1},		0 },
+    { "d", "own",           {(cvntab_fn)0},		0 },
+    { 0, 0, {0}, 0},
 };
 
 void shield(int f)

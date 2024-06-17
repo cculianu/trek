@@ -72,9 +72,9 @@ static char sccsid[] = "@(#)phaser.c	5.4 (Berkeley) 6/1/90";
 
 struct cvntab	Matab[] =
 {
-        "m",		"anual",		(void (*)(int))1,		0,
-	"a",		"utomatic",		0,		0,
-	0
+        {"m",		"anual",		{(cvntab_fn)1},		0},
+        {"a",		"utomatic",		{0},    		0},
+        {0, 0, {0}, 0},
 };
 
 struct banks

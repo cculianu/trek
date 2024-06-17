@@ -91,9 +91,9 @@ double getfltpar(char *s)
 
 struct cvntab	Yntab[] =
 {
-        "y",	"es",	(void (*)())1,	0,
-        "n",	"o",	(void (*)())0,	0,
-        {0}
+        {"y",	"es",	{(cvntab_fn)1},	0},
+        {"n",	"o",	{(cvntab_fn)0},	0},
+        {0, 0, {0}, 0},
 };
 
 int getynpar(char* s)
@@ -101,7 +101,7 @@ int getynpar(char* s)
 	struct cvntab		*r;
 
 	r = getcodpar(s, Yntab);
-        return (int)(long) r->value;
+        return (int)r->value;
 }
 
 

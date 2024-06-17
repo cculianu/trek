@@ -65,7 +65,7 @@ void help(void)
 	register int		i;
 	double			dist, x;
 	register int		dx, dy;
-	int			j, l;
+        int			j, l = 0;
 
 	/* check to see if calling for help is reasonable ... */
         if (Ship.cond == DOCKED) {

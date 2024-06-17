@@ -84,23 +84,22 @@ static char sccsid[] = "@(#)computer.c	4.8 (Berkeley) 6/1/90";
 
 struct cvntab	Cputab[] =
 {
-        "ch",			"art",			(void (*)())1,		0,
-        "t",			"rajectory",		(void (*)())2,		0,
-        "c",			"ourse",		(void (*)())3,		0,
-        "m",			"ove",			(void (*)())3,		1,
-        "s",			"core",			(void (*)())4,		0,
-        "p",			"heff",			(void (*)())5,		0,
-        "w",			"arpcost",		(void (*)())6,		0,
-        "i",			"mpcost",		(void (*)())7,		0,
-        "d",			"istresslist",		(void (*)())8,		0,
-	0
+    {"ch",			"art",			{(cvntab_fn)1},		0},
+    {"t",			"rajectory",		{(cvntab_fn)2},		0},
+    {"c",			"ourse",		{(cvntab_fn)3},		0},
+    {"m",			"ove",			{(cvntab_fn)3},		1},
+    {"s",			"core",			{(cvntab_fn)4},		0},
+    {"p",			"heff",			{(cvntab_fn)5},		0},
+    {"w",			"arpcost",		{(cvntab_fn)6},		0},
+    {"i",			"mpcost",		{(cvntab_fn)7},		0},
+    {"d",			"istresslist",		{(cvntab_fn)8},		0},
+    {0, 0, {0}, 0},
 };
 
 void computer(void)
 {
 	int			ix, iy;
-	register int		i, j;
-	int			numout;
+        int     		i, j;
 	int			tqx, tqy;
 	struct cvntab		*r;
 	int			cost;
@@ -108,14 +107,14 @@ void computer(void)
 	double			dist, time;
 	double			warpfact;
 	struct quad		*q;
-	register struct event	*e;
+        struct event            *e;
 
 	if (check_out(COMPUTER))
 		return;
 	while (1)
 	{
 		r = getcodpar("\nRequest", Cputab);
-                switch ((long)r->value)
+                switch (r->value)
 		{
 
 		  case 1:			/* star chart */

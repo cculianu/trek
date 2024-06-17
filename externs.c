@@ -43,25 +43,25 @@ static char sccsid[] = "@(#)externs.c	5.4 (Berkeley) 6/1/90";
 
 struct device	Device[NDEV] =
 {
-	"warp drive",		"Scotty",
-	"S.R. scanners",	"Scotty",
-	"L.R. scanners",	"Scotty",
-	"phasers",		"Sulu",
-	"photon tubes",		"Sulu",
-	"impulse engines",	"Scotty",
-	"shield control",	"Sulu",
-	"computer",		"Spock",
-	"subspace radio",	"Uhura",
-	"life support",		"Scotty",
-	"navigation system",	"Chekov",
-	"cloaking device",	"Scotty",
-	"transporter",		"Scotty",
-	"shuttlecraft",		"Scotty",
-	"*ERR 14*",		"Nobody",
-	"*ERR 15*",		"Nobody"
+    {"warp drive",		"Scotty"},
+    {"S.R. scanners",           "Scotty"},
+    {"L.R. scanners",           "Scotty"},
+    {"phasers",                 "Sulu"},
+    {"photon tubes",		"Sulu"},
+    {"impulse engines",         "Scotty"},
+    {"shield control",          "Sulu"},
+    {"computer",		"Spock"},
+    {"subspace radio",          "Uhura"},
+    {"life support",		"Scotty"},
+    {"navigation system",	"Chekov"},
+    {"cloaking device",         "Scotty"},
+    {"transporter",		"Scotty"},
+    {"shuttlecraft",		"Scotty"},
+    {"*ERR 14*",		"Nobody"},
+    {"*ERR 15*",		"Nobody"},
 };
 
-char	*Systemname[NINHAB] =
+const char  *Systemname[NINHAB] =
 {
 	"ERROR",
 	"Talos IV",

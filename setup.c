@@ -50,40 +50,39 @@ static char sccsid[] = "@(#)setup.c	5.4 (Berkeley) 6/1/90";
 
 struct cvntab	Lentab[] =
 {
-        "s",		"hort",			(void (*)(int))1,		0,
-        "m",		"edium",		(void (*)(int))2,		0,
-        "l",		"ong",			(void (*)(int))4,		0,
-	"restart",	"",			0,		0,
-	0
+    {"s",		"hort",			{(cvntab_fn)1},		0},
+    {"m",		"edium",		{(cvntab_fn)2},		0},
+    {"l",		"ong",			{(cvntab_fn)4},		0},
+    {"restart",         "",			{0},                    0},
+    {0, 0, {0}, 0},
 };
 
 struct cvntab	Skitab[] =
 {
-        "n",		"ovice",		(void (*)(int))1,		0,
-        "f",		"air",			(void (*)(int))2,		0,
-        "g",		"ood",			(void (*)(int))3,		0,
-        "e",		"xpert",		(void (*)(int))4,		0,
-        "c",		"ommodore",		(void (*)(int))5,		0,
-        "i",		"mpossible",		(void (*)(int))6,		0,
-	0
+    {"n",		"ovice",		{(cvntab_fn)1},		0},
+    {"f",		"air",			{(cvntab_fn)2},		0},
+    {"g",		"ood",			{(cvntab_fn)3},		0},
+    {"e",		"xpert",		{(cvntab_fn)4},		0},
+    {"c",		"ommodore",		{(cvntab_fn)5},		0},
+    {"i",		"mpossible",		{(cvntab_fn)6},		0},
+    {0, 0, {0}, 0},
 };
 
 void setup(void)
 {
 	struct cvntab		*r;
-	register int		i, j;
+        int                     i, j;
 	double			f;
 	int			d;
-	int			fd;
 	int			klump;
 	int			ix, iy;
-	register struct quad	*q;
+        struct quad             *q;
 	struct event		*e;
 
 	while (1)
 	{
 		r = getcodpar("What length game", Lentab);
-                Game.length = (int)(long) r->value;
+                Game.length = (int) r->value;
 		if (Game.length == 0)
 		{
 			if (restartgame())
