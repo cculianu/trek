@@ -93,7 +93,7 @@ extern int ranf(int max);
 extern double franf(void);
 extern void rest(void);
 
-extern struct event *schedule(int type, double offset, char x, char y, char z);
+extern struct event *schedule(int type, double offset, int x, int y, int z);
 extern void reschedule(struct event *e1, double offset);
 extern void unschedule(struct event *e1);
 extern struct event *xsched(int ev1, int factor, int x, int y, int z);

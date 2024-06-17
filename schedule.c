@@ -47,7 +47,7 @@ static char sccsid[] = "@(#)schedule.c	5.4 (Berkeley) 6/1/90";
 **	The address of the slot is returned.
 */
 
-struct event *schedule(int type, double offset, char x, char y, char z)
+struct event *schedule(int type, double offset, int x, int y, int z)
 {
 	register struct event	*e;
 	register int		i;
@@ -61,9 +61,9 @@ struct event *schedule(int type, double offset, char x, char y, char z)
 			continue;
 		/* got a slot */
 #		ifdef xTRACE
-		if (Trace)
-			printf("schedule: type %d @ %.2f slot %d parm %d %d %d\n",
-				type, date, i, x, y, z);
+                if (Trace)
+                    printf("schedule: type %d @ %.2f slot %d parm %d %d %d\n",
+                           type, date, i, x, y, z);
 #		endif
 		e->evcode = type;
 		e->date = date;
@@ -73,7 +73,7 @@ struct event *schedule(int type, double offset, char x, char y, char z)
 		Now.eventptr[type] = e;
 		return (e);
 	}
-	syserr("Cannot schedule event %d parm %d %d %d", type, x, y, z);
+        syserr("Cannot schedule event %d parm %d %d %d", type, x, y, z);
         return NULL;
 }
 
@@ -85,19 +85,16 @@ struct event *schedule(int type, double offset, char x, char y, char z)
 **	time plus 'offset'.
 */
 
-void reschedule(struct event *e1, double offset)
+void reschedule(struct event *e, double offset)
 {
 	double			date;
-	register struct event	*e;
-
-	e = e1;
 
 	date = Now.date + offset;
 	e->date = date;
 #	ifdef xTRACE
 	if (Trace)
-		printf("reschedule: type %d parm %d %d %d @ %.2f\n",
-			e->evcode, e->x, e->y, e->systemname, date);
+            printf("reschedule: type %d parm %d %d %d @ %.2f\n",
+                   e->evcode, (int)e->x, (int)e->y, (int)e->systemname, date);
 #	endif
 	return;
 }
@@ -109,16 +106,12 @@ void reschedule(struct event *e1, double offset)
 **	The event at slot 'e' is deleted.
 */
 
-void unschedule(struct event *e1)
+void unschedule(struct event *e)
 {
-	register struct event	*e;
-
-	e = e1;
-
 #	ifdef xTRACE
 	if (Trace)
 		printf("unschedule: type %d @ %.2f parm %d %d %d\n",
-			e->evcode, e->date, e->x, e->y, e->systemname);
+                        e->evcode, e->date, (int)e->x, (int)e->y, (int)e->systemname);
 #	endif
 	Now.eventptr[e->evcode & E_EVENT] = 0;
 	e->date = 1e50;
@@ -139,7 +132,7 @@ struct event *xsched(int ev1, int factor, int x, int y, int z)
 	register int	ev;
 
 	ev = ev1;
-	return (schedule(ev, -Param.eventdly[ev] * Param.time * log(franf()) / factor, x, y, z));
+        return schedule(ev, -Param.eventdly[ev] * Param.time * log(franf()) / factor, x, y, z);
 }
 
 

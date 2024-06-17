@@ -67,14 +67,16 @@
 # define	NQUADS		8	/* dimension of galazy in quadrants */
 # define	NINHAB		32	/* number of quadrants which are inhabited */
 
+typedef int8_t i8;
+
 struct quad		/* definition for each quadrant */
 {
-	char	bases;		/* number of bases in this quadrant */
-	char	klings;		/* number of Klingons in this quadrant */
-	char	holes;		/* number of black holes in this quadrant */
+        i8	bases;		/* number of bases in this quadrant */
+        i8	klings;		/* number of Klingons in this quadrant */
+        i8	holes;		/* number of black holes in this quadrant */
 	int	scanned;	/* star chart entry (see below) */
-	char	stars;		/* number of stars in this quadrant */
-	char	qsystemname;	/* starsystem name (see below) */
+        i8	stars;		/* number of stars in this quadrant */
+        i8	qsystemname;	/* starsystem name (see below) */
 };
 
 # define	Q_DISTRESSED	0200
@@ -164,10 +166,10 @@ extern struct device	Device[NDEV];
 
 struct event
 {
-	char	x, y;			/* coordinates */
+        i8	x, y;			/* coordinates */
 	double	date;			/* trap stardate */
-	char	evcode;			/* event type */
-	char	systemname;		/* starsystem name */
+        i8	evcode;			/* event type */
+        i8	systemname;		/* starsystem name */
 };
 /* systemname conventions:
  *	1 -> NINHAB	index into Systemname table for reported distress calls
@@ -187,11 +189,11 @@ extern struct event	Event[MAXEVENTS];	/* dynamic event list; one entry per pendi
 
 struct kling
 {
-	char	x, y;		/* coordinates */
+        i8	x, y;		/* coordinates */
 	int	power;		/* power left */
 	double	dist;		/* distance to Enterprise */
 	double	avgdist;	/* average over this move */
-	char	srndreq;	/* set if surrender has been requested */
+        i8	srndreq;	/* set if surrender has been requested */
 };
 
 # define	MAXKLQUAD	9	/* maximum klingons per quadrant */
@@ -215,7 +217,7 @@ struct kling
 
 struct xy
 {
-	char	x, y;		/* coordinates */
+        i8	x, y;		/* coordinates */
 };
 
 
@@ -231,23 +233,23 @@ extern struct S_Ship
 	double	warp;		/* warp factor */
 	double	warp2;		/* warp factor squared */
 	double	warp3;		/* warp factor cubed */
-	char	shldup;		/* shield up flag */
-	char	cloaked;	/* set if cloaking device on */
+        i8	shldup;		/* shield up flag */
+        i8	cloaked;	/* set if cloaking device on */
 	int	energy;		/* starship's energy */
 	int	shield;		/* energy in shields */
 	double	reserves;	/* life support reserves */
 	int	crew;		/* ship's complement */
 	int	brigfree;	/* space left in brig */
-	char	torped;		/* torpedoes */
-	char	cloakgood;	/* set if we have moved */
+        i8	torped;		/* torpedoes */
+        i8	cloakgood;	/* set if we have moved */
 	int	quadx;		/* quadrant x coord */
 	int	quady;		/* quadrant y coord */
 	int	sectx;		/* sector x coord */
 	int	secty;		/* sector y coord */
-	char	cond;		/* condition code */
-	char	sinsbad;	/* Space Inertial Navigation System condition */
+        i8	cond;		/* condition code */
+        i8	sinsbad;	/* Space Inertial Navigation System condition */
 	char	*shipname;	/* name of current starship */
-	char	ship;		/* current starship */
+        i8	ship;		/* current starship */
 	int	distressed;	/* number of distress calls */
 }	Ship;
 
@@ -258,36 +260,36 @@ extern struct S_Game
 {
 	int	killk;		/* number of klingons killed */
 	int	deaths;		/* number of deaths onboard Enterprise */
-	char	negenbar;	/* number of hits on negative energy barrier */
-	char	killb;		/* number of starbases killed */
+        i8	negenbar;	/* number of hits on negative energy barrier */
+        i8	killb;		/* number of starbases killed */
 	int	kills;		/* number of stars killed */
-	char	skill;		/* skill rating of player */
-	char	length;		/* length of game */
-	char	killed;		/* set if you were killed */
-	char	killinhab;	/* number of inhabited starsystems killed */
-	char	tourn;		/* set if a tournament game */
+        i8	skill;		/* skill rating of player */
+        i8	length;		/* length of game */
+        i8	killed;		/* set if you were killed */
+        i8	killinhab;	/* number of inhabited starsystems killed */
+        i8	tourn;		/* set if a tournament game */
 	char	passwd[15];	/* game password */
-	char	snap;		/* set if snapshot taken */
-	char	helps;		/* number of help calls */
+        i8	snap;		/* set if snapshot taken */
+        i8	helps;		/* number of help calls */
 	int	captives;	/* total number of captives taken */
 }	Game;
 
 /* per move information */
 extern struct S_Move
 {
-	char	free;		/* set if a move is free */
-	char	endgame;	/* end of game flag */
-	char	shldchg;	/* set if shields changed this move */
-	char	newquad;	/* set if just entered this quadrant */
-	char	resting;	/* set if this move is a rest */
+        i8	free;		/* set if a move is free */
+        i8	endgame;	/* end of game flag */
+        i8	shldchg;	/* set if shields changed this move */
+        i8	newquad;	/* set if just entered this quadrant */
+        i8	resting;	/* set if this move is a rest */
 	double	time;		/* time used this move */
 }	Move;
 
 /* parametric information */
 extern struct S_Param
 {
-	char	bases;		/* number of starbases */
-	char	klings;		/* number of klingons */
+        i8	bases;		/* number of starbases */
+        i8	klings;		/* number of klingons */
 	double	date;		/* stardate */
 	double	time;		/* time left */
 	double	resource;	/* Federation resources */
@@ -296,7 +298,7 @@ extern struct S_Param
 	double	reserves;	/* life support reserves */
 	int	crew;		/* size of ship's complement */
 	int	brigfree;	/* max possible number of captives */
-	char	torped;		/* photon torpedos */
+        i8	torped;		/* photon torpedos */
 	double	damfac[NDEV];	/* damage factor */
 	double	dockfac;	/* docked repair time factor */
 	double	regenfac;	/* regeneration factor */
@@ -305,7 +307,7 @@ extern struct S_Param
 	int	klingpwr;	/* Klingon initial power */
 	int	warptime;	/* time chewer multiplier */
 	double	phasfac;	/* Klingon phaser power eater factor */
-	char	moveprob[6];	/* probability that a Klingon moves */
+        i8	moveprob[6];	/* probability that a Klingon moves */
 	double	movefac[6];	/* Klingon move distance multiplier */
 	double	eventdly[NEVENTS];	/* event time multipliers */
 	double	navigcrud[2];	/* navigation crudup factor */
@@ -322,12 +324,12 @@ extern struct S_Param
 /* other information kept in a snapshot */
 extern struct S_Now
 {
-	char	bases;		/* number of starbases */
-	char	klings;		/* number of klingons */
+        i8	bases;		/* number of starbases */
+        i8	klings;		/* number of klingons */
 	double	date;		/* stardate */
 	double	time;		/* time left */
 	double	resource;	/* Federation resources */
-	char	distressed;	/* number of currently distressed quadrants */
+        i8	distressed;	/* number of currently distressed quadrants */
         union {
             struct event	*eventptr[NEVENTS];	/* pointer to event structs */
             size_t               eventidx[NEVENTS];     /* Offset from Event[0] base (serialization only) */
@@ -342,12 +344,12 @@ void unserialize_S_Now(struct S_Now *dest, const void *src);
 extern struct S_Etc
 {
 	struct kling	klingon[MAXKLQUAD];	/* sorted Klingon list */
-	char		nkling;			/* number of Klingons in this sector */
+        i8		nkling;			/* number of Klingons in this sector */
 						/* < 0 means automatic override mode */
-	char		fast;			/* set if speed > 300 baud */
+        i8		fast;			/* set if speed > 300 baud */
 	struct xy	starbase;	/* starbase in current quadrant */
 	char		snapshot[sizeof Quad + sizeof Event + sizeof Now];	/* snapshot for time warp */
-	char		statreport;		/* set to get a status report on a srscan */
+        i8		statreport;		/* set to get a status report on a srscan */
 }	Etc;
 
 /*

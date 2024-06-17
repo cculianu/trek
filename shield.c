@@ -68,7 +68,7 @@ void shield(int f)
 	char			s[100];
 	char			*device, *dev2, *dev3;
 	int			ind;
-	char			*stat;
+        i8			*stat;
 
 	if (f > 0 && (Ship.shldup || damaged(SRSCAN)))
 		return;
