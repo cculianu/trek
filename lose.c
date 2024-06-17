@@ -68,7 +68,7 @@ void lose(int why)
 	extern jmp_buf	env;
 
 	Game.killed = 1;
-	sleep(1);
+        sleep_secs(1);
 	printf("\n%s\n", Losemsg[why - 1]);
 	switch (why)
 	{

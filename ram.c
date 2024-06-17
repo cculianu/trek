@@ -66,7 +66,7 @@ void ram(int ix, int iy)
 	  case STAR:
 	  case INHABIT:
 		printf("Yeoman Rand: Captain, isn't it getting hot in here?\n");
-		sleep(2);
+                sleep_secs(2);
 		printf("Spock: Hull temperature approaching 550 Degrees Kelvin.\n");
 		lose(L_STAR);
 
@@ -78,7 +78,7 @@ void ram(int ix, int iy)
 			Game.killb += 1;
 		break;
 	}
-	sleep(2);
+        sleep_secs(2);
 	printf("%s heavily damaged\n", Ship.shipname);
 
 	/* select the number of deaths to occur */

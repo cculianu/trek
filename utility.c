@@ -41,6 +41,11 @@ static char sccsid[] = "@(#)utility.c	5.4 (Berkeley) 6/1/90";
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#if defined(HAVE_UNISTD_H)
+#include <unistd.h>
+#elif defined(_WIN32)
+#include <windows.h>
+#endif
 
 /*
 **  ASSORTED UTILITY ROUTINES
@@ -133,3 +138,13 @@ void syserr(const char *fmt, ...)
 
 size_t length(const char *s) { return strlen(s); }
 
+void sleep_secs(unsigned seconds)
+{
+#if defined(HAVE_UNISTD_H)
+    sleep(seconds);
+#elif defined(_WIN32)
+    Sleep(seconds * 1000u);
+#else
+#error "Unknown platform!"
+#endif
+}

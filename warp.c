@@ -128,11 +128,11 @@ void warp(int fl, int c, double d)
 	if (Ship.warp <= 9.0)
 		return;
 	printf("\n\n  ___ Speed exceeding warp nine ___\n\n");
-	sleep(2);
+        sleep_secs(2);
 	printf("Ship's safety systems malfunction\n");
-	sleep(2);
+        sleep_secs(2);
 	printf("Crew experiencing extreme sensory distortion\n");
-	sleep(4);
+        sleep_secs(4);
 	if (ranf(100) >= 100 * dist)
 	{
             printf("Equilibrium restored -- all systems normal\n");

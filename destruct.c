@@ -68,34 +68,34 @@ void destruct(void)
             return;
         }
 	printf("\n\07 --- WORKING ---\07\n");
-	sleep(3);
+        sleep_secs(3);
 	/* output the count 10 9 8 7 6 */
 	for (i = 10; i > 5; i--)
 	{
 		for (j = 10;  j > i; j--)
 			printf("   ");
 		printf("%d\n", i);
-		sleep(1);
+                sleep_secs(1);
 	}
 	/* check for password on new line only */
 	skiptonl(0);
 	getstrpar("Enter password verification", checkpass, 14, 0);
-	sleep(2);
+        sleep_secs(2);
         if (!sequal(checkpass, Game.passwd)) {
             printf("Self destruct sequence aborted\n");
             return;
         }
 	printf("Password verified; self destruct sequence continues:\n");
-	sleep(2);
+        sleep_secs(2);
 	/* output count 5 4 3 2 1 0 */
 	for (i = 5; i >= 0; i--)
 	{
-		sleep(1);
+                sleep_secs(1);
 		for (j = 5; j > i; j--)
 			printf("   ");
 		printf("%d\n", i);
 	}
-	sleep(2);
+        sleep_secs(2);
 	printf("\032\014***** %s destroyed *****\n", Ship.shipname);
 	Game.killed = 1;
 	/* let's see what we can blow up!!!! */

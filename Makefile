@@ -5,7 +5,7 @@ PROG=	trek
 DESTDIR=/usr/bin/games
 LIBDIR= $(DESTDIR)/lib
 MANDIR= /usr/local/man/man6
-CFLAGS= -O2 
+CFLAGS= -O2 -DHAVE_UNISTD_H
 
 SRCS=	abandon.c attack.c autover.c capture.c check_out.c checkcond.c \
 	compkl.c computer.c damage.c damaged.c dcrept.c destruct.c \

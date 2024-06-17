@@ -76,26 +76,26 @@ static const char *const dumpfile = "trek.dump";
 
 void dumpgame(void)
 {
-    int		version;
-    int		fd;
-    struct dump	*d;
+    int         version;
+    FILE        *of;
+    struct dump *d;
     int error = 0;
 
-    if ((fd = open(dumpfile, O_CREAT | O_TRUNC | O_WRONLY, 0644)) < 0) {
+    if ( ! (of = fopen(dumpfile, "wb"))) {
         printf("cannot open dump file for writing: %s\n", dumpfile);
         return;
     }
     /* write version int */
     version = VERSION;
-    if (write(fd, &version, sizeof(version)) != (long)sizeof(version)) {
+    if (fwrite(&version, 1, sizeof(version), of) != sizeof(version)) {
         error = 1;
     }
 
     /* output the main data areas */
     for (d = Dump_template; !error && d->area; ++d)
     {
-        error =    write(fd, &d->code, sizeof(d->code)) != (long)sizeof(d->code)
-                || write(fd, &d->count, sizeof(d->count)) != (long)sizeof(d->count);
+        error =    fwrite(&d->code, 1, sizeof(d->code), of) != sizeof(d->code)
+                || fwrite(&d->count, 1, sizeof(d->count), of) != sizeof(d->count);
 
         if (error) continue;
 
@@ -103,7 +103,7 @@ void dumpgame(void)
             /* temporarily modify Now to use indices for serialization */
             serialize_S_Now(d->area, (const struct S_Now *)d->area);
 
-        error = write(fd, d->area, d->count) != (long)d->count;
+        error = fwrite(d->area, 1, d->count, of) != d->count;
 
         if (d->area == &Now)
             /* modify it back to use pointers */
@@ -114,9 +114,10 @@ void dumpgame(void)
         printf("dump write failure (%s)\n", dumpfile);
     else
         printf("saved game state to dump file: %s\n", dumpfile);
-    close(fd);
+    fclose(of);
 }
 
+static int readdump(FILE *fin);
 
 /*
 **  RESTORE GAME
@@ -131,12 +132,13 @@ void dumpgame(void)
 
 int restartgame(void)
 {
-    int fd = -1, version = ~VERSION, ret = 0;
+    FILE *fin = NULL;
+    int version = ~VERSION, ret = 0;
 
-    if (   (fd = open(dumpfile, O_RDONLY)) < 0
-        || read(fd, &version, sizeof(version)) != (long)sizeof(version)
+    if (   (fin = fopen(dumpfile, "rb")) == NULL
+        || fread(&version, 1, sizeof(version), fin) != sizeof(version)
         || version != VERSION
-        || readdump(fd) != 0)
+        || readdump(fin) != 0)
     {
         printf("cannot restart from dumpfile: %s\n", dumpfile);
         ret = 1;
@@ -145,7 +147,7 @@ int restartgame(void)
         ret = 0;
     }
 
-    close(fd);
+    fclose(fin);
     return ret;
 }
 
@@ -159,7 +161,7 @@ int restartgame(void)
 **	Returns zero for success, one for failure.
 */
 
-int readdump(int fd)
+static int readdump(FILE *fin)
 {
     struct dump	*d;
     uint16_t code;
@@ -167,11 +169,11 @@ int readdump(int fd)
 
     for (d = Dump_template; d->area; ++d)
     {
-        if (   read(fd, &code, sizeof(code)) != (long)sizeof(code)
+        if (   fread(&code, 1, sizeof(code), fin) != sizeof(code)
             || code != d->code
-            || read(fd, &count, sizeof(count)) != (long)sizeof(count)
+            || fread(&count, 1, sizeof(count), fin) != sizeof(count)
             || count != d->count
-            || read(fd, d->area, count) != (long)count)
+            || fread(d->area, 1, count, fin) != count)
             return 1;
         if (d->area == &Now)
             /* special-case to "unserialize" this by transforming event indices back to pointers */
@@ -179,7 +181,7 @@ int readdump(int fd)
     }
 
     /* make quite certain we are at EOF */
-    return   read(fd, &count, 1) == 0
+    return   feof(fin) || fread(&count, 1, 1, fin) == 0
            ? 0
            : 1;
 }

@@ -54,12 +54,11 @@
 #define TREK_H
 
 /* These headers, while not accessed here, are used in various places in the program and are included here. */
-#include <fcntl.h>
 #include <math.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 /*********************  GALAXY  **************************/
 

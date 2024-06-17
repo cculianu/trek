@@ -59,4 +59,10 @@ add_executable(trek
     win.c
 )
 
+include(CheckIncludeFile)
+CHECK_INCLUDE_FILE(unistd.h HAVE_UNISTD_H)
+if(HAVE_UNISTD_H)
+    target_compile_definitions(trek PRIVATE -DHAVE_UNISTD_H)
+endif()
+
 target_compile_definitions(trek PRIVATE -Dlint)

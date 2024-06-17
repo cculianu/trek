@@ -67,7 +67,6 @@ extern void dock(void);
 extern void undock(void);
 extern void dumpgame(void);
 extern int restartgame(void);
-extern int readdump(int fd1);
 extern void dumpme(int flag);
 extern int dumpssradio(void);
 extern int events(int warp /* set if called in a time warp */);
@@ -129,6 +128,7 @@ extern void syserr(const char *fmt, ...);
 extern int sequal(const char *a, const char *b);
 extern char *concat(const char *s1, const char *s2, char *s3);
 extern size_t length(const char *s);
+extern void sleep_secs(unsigned seconds);
 
 /* "Getpar" (get parameter) forward declarations: */
 #include "getpar.h"

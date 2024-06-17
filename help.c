@@ -127,7 +127,7 @@ void help(void)
 	/* attempt to rematerialize */
 	for (i = 0; i < 3; i++)
 	{
-		sleep(2);
+                sleep_secs(2);
 		printf("%s attempt to rematerialize ", Cntvect[i]);
 		if (franf() > x)
 		{

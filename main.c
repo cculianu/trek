@@ -41,11 +41,12 @@ char copyright[] =
 static char sccsid[] = "@(#)main.c	5.7 (Berkeley) 2/28/91";
 #endif /* not lint */
 
-# include	<stdio.h>
-# include	<sgtty.h>
-# include	<setjmp.h>
-
 # include	"trek.h"
+/* Non-portable: # include	<sgtty.h> */
+# include	<setjmp.h>
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 
 # define	PRIO		00	/* default priority */
 
@@ -155,7 +156,7 @@ int main(int argc, char* *argv)
         /* time_t			now; <-- UNUSED, left in for historical purposes */
 	/* extern FILE		*f_log; */
 	register char		opencode;
-	int			prio;
+        /* This is not used: int        prio = PRIO;*/
 	register int		ac;
 	register char		**av;
 	/* struct	sgttyb		argp; */ /*non-portable - see below */
@@ -168,7 +169,6 @@ int main(int argc, char* *argv)
         srand(now);
         */
 	opencode = 'w';
-	prio = PRIO;
 /* Comment out this ancient non-portable crap.  It should use termios anyway.
 #ifdef linux
 	if (ioctl(1, TIOCGETP, &argp) == 0)
@@ -195,24 +195,27 @@ int main(int argc, char* *argv)
 		  case 's':	/* set slow mode */
 			Etc.fast = 0;
 			break;
-
+#ifdef HAVE_UNISTD_H
 #		ifdef xTRACE
-		  case 't':	/* trace */
-			if (getuid() != Mother)
-				goto badflag;
-			Trace++;
-			break;
+                  case 't':	/* trace */
+                        if (getuid() != (uid_t)Mother)
+                            goto badflag;
+                        Trace++;
+                        break;
 #		endif
-
-		  case 'p':	/* set priority */
+#endif
+/* UNUSED
+                  case 'p':	/ * set priority * /
 			if (getuid() != Mother)
 				goto badflag;
 			prio = atoi(av[0] + 2);
 			break;
-
-		  default:
-		  badflag:
-			printf("Invalid option: %s\n", av[0]);
+*/
+                  default:
+#if HAVE_UNISTD_H
+                  badflag:
+#endif
+                        printf("Invalid option: %s\n", av[0]);
 
 		}
 		ac--;

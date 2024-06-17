@@ -58,7 +58,7 @@ void win(void)
 	extern struct cvntab	Skitab[];
 	register struct cvntab	*p;
 
-	sleep(1);
+        sleep_secs(1);
 	printf("\nCongratulations, you have saved the Federation\n");
 	Move.endgame = 1;
 

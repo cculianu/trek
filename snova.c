@@ -114,7 +114,7 @@ void snova(int x, int y)
 		if (dx * dx + dy * dy <= 2)
 		{
 			printf("***  Emergency override attem");
-			sleep(1);
+                        sleep_secs(1);
 			printf("\n");
 			lose(L_SNOVA);
 		}

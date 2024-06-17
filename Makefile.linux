@@ -6,7 +6,7 @@ DESTDIR=/usr/games
 LIBDIR= $(DESTDIR)/lib
 MANDIR= /usr/man/man6
 CC=     gcc
-CFLAGS= -O2
+CFLAGS= -O2 -DHAVE_UNISTD_H
 
 SRCS=	abandon.c attack.c autover.c capture.c check_out.c checkcond.c \
 	compkl.c computer.c damage.c damaged.c dcrept.c destruct.c \
