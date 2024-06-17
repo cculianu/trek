@@ -48,7 +48,7 @@ static char sccsid[] = "@(#)systemname.c	5.4 (Berkeley) 6/1/90";
 **	starsystems, etc.
 */
 
-const char *systemname_common(int i)
+static const char *systemname_common(int i)
 {
     if (i & Q_DISTRESSED)
         i = Event[i & Q_SYSTEM].systemname;
