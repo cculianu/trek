@@ -35,24 +35,21 @@
 static char sccsid[] = "@(#)ranf.c	5.4 (Berkeley) 6/1/90";
 #endif /* not lint */
 
-# include	<stdlib.h>
 # include       <stdint.h>
+# include       <stdlib.h>
 #ifdef USE_LIBBSD
 # include       <bsd/stdlib.h> /* For arc4random() */
 #endif
 
 int ranf(int max)
 {
-        uint32_t t;
-
-	if (max <= 0)
-		return (0);
-        t = arc4random();
-	return (t % max);
+    if (max <= 0)
+        return 0;
+    return arc4random_uniform((uint32_t)max);
 }
 
 
 double franf(void)
 {
-        return arc4random() / (double)0xffffffffu;
+    return arc4random() / (double)0xffffffffu;
 }
