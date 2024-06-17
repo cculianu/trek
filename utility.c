@@ -119,9 +119,9 @@ void syserr(const char *fmt, ...)
     vprintf(fmt, ap);
     printf("\n");
     if (errno)
-        printf("\tsystem error %d\n", errno);
+        printf("\tsystem error %d: %s\n", errno, strerror(errno));
     va_end(ap);
-    exit(-1);
+    exit(EXIT_FAILURE);
 }
 
 /*
