@@ -66,3 +66,14 @@ if(HAVE_UNISTD_H)
 endif()
 
 target_compile_definitions(trek PRIVATE -Dlint)
+
+find_library(LIB_BSD bsd)
+if(LIB_BSD)
+    target_compile_definitions(trek PRIVATE -DUSE_LIBBSD)
+    target_link_libraries(trek PRIVATE bsd)
+endif()
+
+find_library(LIB_M m)
+if(LIB_M)
+    target_link_libraries(trek PRIVATE m)
+endif()
