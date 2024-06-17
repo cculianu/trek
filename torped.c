@@ -99,7 +99,7 @@ void torped(void)
 		/* see if the user wants one */
 		if (!testnl())
 		{
-			k = ungetc(cgetc(0), stdin);
+			k = ungetc(cgetc(), stdin);
 			if (k >= '0' && k <= '9')
 				burst = 1;
 		}

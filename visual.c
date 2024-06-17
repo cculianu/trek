@@ -49,17 +49,17 @@ static char sccsid[] = "@(#)visual.c	5.4 (Berkeley) 6/1/90";
 /* This struct[] has the delta x, delta y for particular directions */
 struct xy	Visdelta[11] =
 {
-	-1,	-1,
-	-1,	 0,
-	-1,	 1,
-	 0,	 1,
-	 1,	 1,
-	 1,	 0,
-	 1,	-1,
-	 0,	-1,
-	-1,	-1,
-	-1,	 0,
-	-1,	 1
+        {-1,	-1},
+        {-1,	 0},
+        {-1,	 1},
+        { 0,	 1},
+        { 1,	 1},
+        { 1,	 0},
+        { 1,	-1},
+        { 0,	-1},
+        {-1,	-1},
+        {-1,	 0},
+        {-1,	 1},
 };
 
 void visual(void)

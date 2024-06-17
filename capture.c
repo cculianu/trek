@@ -56,7 +56,6 @@ void capture(void)
 	register int		i;
 	register struct kling	*k;
 	double			x;
-	extern struct kling	*selectklingon();
 
 	/* check for not cloaked */
 	if (Ship.cloaked)

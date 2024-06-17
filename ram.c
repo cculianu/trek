@@ -68,7 +68,8 @@ void ram(int ix, int iy)
 		printf("Yeoman Rand: Captain, isn't it getting hot in here?\n");
                 sleep_secs(2);
 		printf("Spock: Hull temperature approaching 550 Degrees Kelvin.\n");
-		lose(L_STAR);
+                lose(L_STAR); /* does not return, jumps to main. */
+                break;
 
 	  case BASE:
 		printf("You ran into the starbase at %d,%d\n", ix, iy);

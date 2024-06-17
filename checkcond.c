@@ -64,8 +64,6 @@ static char sccsid[] = "@(#)checkcond.c	5.4 (Berkeley) 6/1/90";
 
 void checkcond(void)
 {
-	register int		i, j;
-
 	/* see if we are still alive and well */
 	if (Ship.reserves < 0.0)
 		lose(L_NOLIFE);

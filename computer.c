@@ -281,7 +281,7 @@ void computer(void)
 		/* skip to next semicolon or newline.  Semicolon
 		 * means get new computer request; newline means
 		 * exit computer mode. */
-		while ((i = cgetc(0)) != ';')
+                while ((i = cgetc()) != ';')
 		{
 			if (i == '\0')
 				exit(1);

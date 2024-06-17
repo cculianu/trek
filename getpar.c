@@ -125,7 +125,7 @@ const struct cvntab *getcodpar(const char *s, const struct cvntab tab[])
 		if (flag)
 			printf("%s: ", s);
 		if (f)
-			cgetc(0);		/* throw out the newline */
+			cgetc();		/* throw out the newline */
 		scanf("%*[ \t;]");
 		if ((c = scanf("%[^ \t;\n]", input)) < 0)
 			exit(1);
@@ -198,7 +198,7 @@ void getstrpar(char* s, char* r, int l, char* t)
 		if ((f = testnl()) && s)
 			printf("%s: ", s);
 		if (f)
-			cgetc(0);
+			cgetc();
 		scanf("%*[\t ;]");
 		i = scanf(format, r);
 		if (i < 0)
@@ -217,7 +217,7 @@ int testnl(void)
 {
 	register char		c;
 
-	while ((c = cgetc(0)) != '\n')
+	while ((c = cgetc()) != '\n')
 		if ((c >= '0' && c <= '9') || c == '.' || c == '!' ||
 				(c >= 'A' && c <= 'Z') ||
 				(c >= 'a' && c <= 'z') || c == '-')
@@ -237,7 +237,7 @@ int testnl(void)
 void skiptonl(char c)
 {
 	while (c != '\n')
-		if (!(c = cgetc(0)))
+		if (!(c = cgetc()))
 			return;
 	ungetc('\n', stdin);
 	return;
@@ -252,7 +252,7 @@ int testterm(void)
 {
 	register char		c;
 
-	if (!(c = cgetc(0)))
+	if (!(c = cgetc()))
 		return (1);
 	if (c == '.')
 		return (0);
@@ -274,7 +274,7 @@ int readdelim(char d)
 {
     char c;
 
-    while ((c = cgetc(0)))
+    while ((c = cgetc()))
     {
         if (c == d)
             return 1;

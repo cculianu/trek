@@ -155,7 +155,7 @@ int main(int argc, char* *argv)
 {
         /* time_t			now; <-- UNUSED, left in for historical purposes */
 	/* extern FILE		*f_log; */
-	register char		opencode;
+        /* char		opencode = 'w'; <--- UNUSED, left in for historical purposes */
         /* This is not used: int        prio = PRIO;*/
 	register int		ac;
 	register char		**av;
@@ -168,7 +168,6 @@ int main(int argc, char* *argv)
         time(&now);
         srand(now);
         */
-	opencode = 'w';
 /* Comment out this ancient non-portable crap.  It should use termios anyway.
 #ifdef linux
 	if (ioctl(1, TIOCGETP, &argp) == 0)
@@ -184,10 +183,11 @@ int main(int argc, char* *argv)
 	{
 		switch (av[0][1])
 		{
-		  case 'a':	/* append to log file */
-			opencode = 'a';
+/* UNUSED
+                  case 'a':	/ * append to log file * /
+                        opencode = 'a';
 			break;
-
+*/
 		  case 'f':	/* set fast mode */
 			Etc.fast++;
 			break;

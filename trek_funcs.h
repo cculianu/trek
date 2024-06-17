@@ -50,7 +50,7 @@ extern void out(int dev);
 extern int damaged(int dev);
 extern void damage(int dev1 /*  device index */, double dam /* time to repair */);
 extern struct kling *selectklingon(void);
-extern char cgetc(int i);
+extern char cgetc(void);
 extern int check_out(int device);
 extern void checkcond(void);
 extern void compkldist(int f/* set if new quadrant */);
