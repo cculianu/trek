@@ -48,12 +48,6 @@ static char sccsid[] = "@(#)play.c	5.6 (Berkeley) 6/26/90";
 **	attack if the move was not free, and checkcond() to check up
 **	on how we are doing after the move.
 */
-/*
-extern int	abandon(), capture(), shield(), computer(), dcrept(),
-		destruct(), dock(), help(), impulse(), lrscan(),
-		warp(), dumpgame(), rest(), srscan(),
-		myreset(), torped(), visual(), setwarp(), undock(), phaser();
-*/
 
 static void my_abandon(int i) { (void)i; abandon(); }
 static void my_capture(int i) { (void)i; capture(); }
@@ -76,55 +70,55 @@ static void my_setwarp(int i) { (void)i; setwarp(); }
 
 struct cvntab	Comtab[] =
 {
-        "abandon",		"",			my_abandon,	0,
-        "ca",			"pture",		my_capture,	0,
-	"cl",			"oak",			shield,	-1,
-        "c",			"omputer",		my_computer,	0,
-        "da",			"mages",		my_dcrept,	0,
-        "destruct",		"",			my_destruct,	0,
-        "do",			"ck",			my_dock,		0,
-        "help",			"",			my_help,		0,
-        "i",			"mpulse",		my_impulse,	0,
-        "l",			"rscan",		my_lrscan,	0,
-        "m",			"ove",			my_warp,		0,
-        "p",			"hasers",		my_phaser,	0,
-        "ram",			"",			my_warp,		1,
-        "dump",			"",			my_dumpgame,	0,
-        "r",			"est",			my_rest,		0,
-	"sh",			"ield",			shield,	0,
-	"s",			"rscan",		srscan,	0,
-	"st",			"atus",			srscan,	-1,
-        "terminate",		"",			my_myreset,	0,
-        "t",			"orpedo",		my_torped,	0,
-        "u",			"ndock",		my_undock,	0,
-        "v",			"isual",		my_visual,	0,
-        "w",			"arp",			my_setwarp,	0,
-	0
+    {"abandon",                 "",			{my_abandon},	0},
+    {"ca",			"pture",		{my_capture},	0},
+    {"cl",			"oak",			{shield},	-1},
+    {"c",			"omputer",		{my_computer},	0},
+    {"da",			"mages",		{my_dcrept},	0},
+    {"destruct",		"",			{my_destruct},	0},
+    {"do",			"ck",			{my_dock},	0},
+    {"help",			"",			{my_help},	0},
+    {"i",			"mpulse",		{my_impulse},	0},
+    {"l",			"rscan",		{my_lrscan},	0},
+    {"m",			"ove",			{my_warp},	0},
+    {"p",			"hasers",		{my_phaser},	0},
+    {"ram",			"",			{my_warp},	1},
+    {"dump",			"",			{my_dumpgame},	0},
+    {"r",			"est",			{my_rest},	0},
+    {"sh",			"ield",			{shield},	0},
+    {"s",			"rscan",		{srscan},	0},
+    {"st",			"atus",			{srscan},	-1},
+    {"terminate",		"",			{my_myreset},	0},
+    {"t",			"orpedo",		{my_torped},	0},
+    {"u",			"ndock",		{my_undock},	0},
+    {"v",			"isual",		{my_visual},	0},
+    {"w",			"arp",			{my_setwarp},	0},
+    {0, 0, {0}, 0},
 };
 
 void myreset(void)
 {
-	extern jmp_buf env;
+    extern jmp_buf env;
 
-	longjmp(env, 1);
+    longjmp(env, 1);
 }
 
 void play(void)
 {
-	struct cvntab		*r;
+    const struct cvntab	*r;
 
-	while (1)
-	{
-		Move.free = 1;
-		Move.time = 0.0;
-		Move.shldchg = 0;
-		Move.newquad = 0;
-		Move.resting = 0;
-		skiptonl(0);
-		r = getcodpar("\nCommand", Comtab);
-                (*r->func)(r->value2);
-		events(0);
-		attack(0);
-		checkcond();
-	}
+    while (1)
+    {
+        Move.free = 1;
+        Move.time = 0.0;
+        Move.shldchg = 0;
+        Move.newquad = 0;
+        Move.resting = 0;
+        skiptonl(0);
+        r = getcodpar("\nCommand", Comtab);
+        (*r->func)(r->value2);
+        events(0);
+        attack(0);
+        checkcond();
+    }
 }

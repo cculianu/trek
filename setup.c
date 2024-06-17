@@ -70,7 +70,7 @@ struct cvntab	Skitab[] =
 
 void setup(void)
 {
-	struct cvntab		*r;
+        const struct cvntab	*r;
         int                     i, j;
 	double			f;
 	int			d;

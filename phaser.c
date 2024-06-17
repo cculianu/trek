@@ -100,7 +100,7 @@ void phaser(void)
 	int			n;
 	int			hitreqd[NBANKS];
 	struct banks		bank[NBANKS];
-	struct cvntab		*ptr;
+        const struct cvntab	*ptr;
 
         if (Ship.cond == DOCKED) {
             printf("Phasers cannot fire through starbase shields\n");

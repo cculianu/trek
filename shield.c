@@ -64,7 +64,7 @@ struct cvntab Udtab[] =
 void shield(int f)
 {
         long			i;
-	struct cvntab		*r;
+        const struct cvntab	*r;
 	char			s[100];
 	char			*device, *dev2, *dev3;
 	int			ind;

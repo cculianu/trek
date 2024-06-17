@@ -39,8 +39,8 @@ typedef void(*cvntab_fn)(int);
 
 struct cvntab		/* used for getcodpar() paramater list */
 {
-	char	*abrev;
-	char	*full;
+        const char	*abrev;
+        const char	*full;
         union {
             cvntab_fn   func;
             long        value;
@@ -49,7 +49,7 @@ struct cvntab		/* used for getcodpar() paramater list */
 };
 
 extern double getfltpar(char *s);
-extern struct cvntab *getcodpar(char *s, struct cvntab tab[]);
+extern const struct cvntab *getcodpar(const char *s, const struct cvntab tab[]);
 extern int getynpar(char* s);
 extern int getintpar(char* s);
 extern void getstrpar(char* s, char* r, int l, char* t);

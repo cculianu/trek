@@ -98,7 +98,7 @@ struct cvntab	Yntab[] =
 
 int getynpar(char* s)
 {
-	struct cvntab		*r;
+        const struct cvntab *r;
 
 	r = getcodpar(s, Yntab);
         return (int)r->value;
@@ -109,12 +109,12 @@ int getynpar(char* s)
  **	get coded parameter
  **/
 
-struct cvntab *getcodpar(char *s, struct cvntab	tab[])
+const struct cvntab *getcodpar(const char *s, const struct cvntab tab[])
 {
 	char				input[100];
-	register struct cvntab		*r;
+        const struct cvntab		*r;
 	int				flag;
-	register char			*p, *q;
+        const char			*p, *q;
 	int				c;
 	int				f;
 
@@ -175,7 +175,7 @@ struct cvntab *getcodpar(char *s, struct cvntab	tab[])
 			skiptonl(0);
 		}
 		else
-			return (r);
+                        return r;
 	}
 }
 
