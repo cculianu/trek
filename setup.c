@@ -118,7 +118,8 @@ void setup(void)
 	Param.energy = Ship.energy = 5000;
 	Param.torped = Ship.torped = 10;
 	Ship.ship = ENTERPRISE;
-	Ship.shipname = "Enterprise";
+        strncpy(Ship.shipname, "Enterprise", sizeof(Ship.shipname));
+        Ship.shipname[sizeof(Ship.shipname) - 1] = 0;
 	Param.shield = Ship.shield = 1500;
 	Param.resource = Now.resource = Param.klings * Param.time;
 	Param.reserves = Ship.reserves = (6 - Game.skill) * 2.0;

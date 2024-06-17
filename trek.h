@@ -59,6 +59,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> /* for memcpy(), etc */
 
 /*********************  GALAXY  **************************/
 
@@ -248,7 +249,7 @@ extern struct S_Ship
 	int	secty;		/* sector y coord */
         i8	cond;		/* condition code */
         i8	sinsbad;	/* Space Inertial Navigation System condition */
-	char	*shipname;	/* name of current starship */
+        char	shipname[16];	/* name of current starship */
         i8	ship;		/* current starship */
 	int	distressed;	/* number of distress calls */
 }	Ship;

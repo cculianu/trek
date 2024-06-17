@@ -100,7 +100,8 @@ void abandon(void)
 	printf("You are hereby put in charge of an antiquated but still\n");
 	printf("  functional ship, the Fairie Queene.\n");
 	Ship.ship = QUEENE;
-	Ship.shipname = "Fairie Queene";
+        strncpy(Ship.shipname, "Fairie Queene", sizeof(Ship.shipname));
+        Ship.shipname[sizeof(Ship.shipname) - 1] = 0;
 	Param.energy = Ship.energy = 3000;
 	Param.torped = Ship.torped = 6;
 	Param.shield = Ship.shield = 1250;
