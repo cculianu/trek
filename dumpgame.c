@@ -43,7 +43,7 @@ struct dump
     size_t   count;
 };
 
-static struct dump Dump_template[] = {
+static const struct dump Dump_template[] = {
     {0x1234, &Ship,  sizeof(Ship) },
     {0x5678, &Now,   sizeof(Now)  },
     {0x9abc, &Param, sizeof(Param)},
@@ -70,10 +70,10 @@ static const char * const dumpfile = "trek.dump";
 
 void dumpgame(void)
 {
-    int          version;
-    FILE        *of;
-    struct dump *d;
-    int          error = 0;
+    int                version;
+    FILE              *of;
+    const struct dump *d;
+    int                error = 0;
 
     if (! (of = fopen(dumpfile, "wb")))
     {
@@ -160,9 +160,9 @@ int restartgame(void)
 
 static int readdump(FILE *fin)
 {
-    struct dump *d;
-    uint16_t     code;
-    size_t       count;
+    const struct dump *d;
+    uint16_t           code;
+    size_t             count;
 
     for (d = Dump_template; d->area; ++d)
     {
