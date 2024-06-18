@@ -77,3 +77,8 @@ find_library(LIB_M m)
 if(LIB_M)
     target_link_libraries(trek PRIVATE m)
 endif()
+
+if(WIN32)
+    # On Windows, define this when compiling to not get the warnings about using strncpy(), etc.
+    target_compile_definitions(trek PRIVATE -D_CRT_SECURE_NO_WARNINGS)
+endif()
