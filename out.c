@@ -39,7 +39,7 @@
 
 void out(int dev)
 {
-    struct device *d;
+    const struct device *d;
 
     d = &Device[dev];
     printf("%s reports %s ", d->person, d->name);

@@ -102,7 +102,7 @@ struct quad /* definition for each quadrant */
  */
 
 /* ascii names of systems */
-extern const char *Systemname[NINHAB];
+extern const char * const Systemname[NINHAB];
 
 /* quadrant definition */
 extern struct quad Quad[NQUADS][NQUADS];
@@ -147,7 +147,7 @@ struct device
     const char *person; /* the person who fixes it */
 };
 
-extern struct device Device[NDEV];
+extern const struct device Device[NDEV];
 
 /***************************  EVENTS  ****************************/
 

@@ -48,7 +48,7 @@
 **	The current quadrant is filled in on the computer chart.
 */
 
-static const char *Color[4] = {"GREEN", "DOCKED", "YELLOW", "RED"};
+static const char * const Color[4] = {"GREEN", "DOCKED", "YELLOW", "RED"};
 
 void srscan(int f)
 {

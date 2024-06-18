@@ -37,7 +37,7 @@
 **	global variable definitions
 */
 
-struct device Device[NDEV] = {
+const struct device Device[NDEV] = {
     {"warp drive",        "Scotty"},
     {"S.R. scanners",     "Scotty"},
     {"L.R. scanners",     "Scotty"},
@@ -56,7 +56,7 @@ struct device Device[NDEV] = {
     {"*ERR 15*",          "Nobody"},
 };
 
-const char *Systemname[NINHAB] = {
+const char * const Systemname[NINHAB] = {
     "ERROR",
     "Talos IV",
     "Rigel III",
