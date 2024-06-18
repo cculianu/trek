@@ -35,6 +35,8 @@
 #ifndef TREK_GET_PAR_H
 #define TREK_GET_PAR_H
 
+#include <stddef.h>
+
 typedef void (*cvntab_fn)(int);
 
 /* used for getcodpar() paramater list */
@@ -45,7 +47,7 @@ struct cvntab
     union
     {
         cvntab_fn func;
-        long long value;
+        ptrdiff_t value;
     };
     int value2;
 };

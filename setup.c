@@ -86,7 +86,7 @@ void setup(void)
         break;
     }
     r = getcodpar("What skill game", Skitab);
-    Game.skill = (int)(long)r->value;
+    Game.skill = (int)r->value;
     Game.tourn = 0;
     getstrpar("Enter a password", Game.passwd, 14, 0);
     if (sequal(Game.passwd, "tournament"))

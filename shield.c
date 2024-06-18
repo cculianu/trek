@@ -58,7 +58,7 @@ static struct cvntab Udtab[] = {
 
 void shield(int f)
 {
-    long                 i;
+    int                  i;
     const struct cvntab *r;
     char                 s[100];
     char                *device, *dev2, *dev3;
@@ -104,7 +104,7 @@ void shield(int f)
     if (f <= 0 && ! testnl())
     {
         r = getcodpar("Up or down", Udtab);
-        i = (long)r->value;
+        i = (int)r->value;
     }
     else
     {
