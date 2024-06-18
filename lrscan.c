@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)lrscan.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  LONG RANGE OF SCANNERS
@@ -51,57 +47,56 @@ static char sccsid[] = "@(#)lrscan.c	5.4 (Berkeley) 6/1/90";
 
 void lrscan(void)
 {
-	register int			i, j;
-	register struct quad		*q;
+    int          i, j;
+    struct quad *q;
 
-	if (check_out(LRSCAN))
-	{
-		return;
-	}
-	printf("Long range scan for quadrant %d,%d\n\n", Ship.quadx, Ship.quady);
+    if (check_out(LRSCAN))
+    {
+        return;
+    }
+    printf("Long range scan for quadrant %d,%d\n\n", Ship.quadx, Ship.quady);
 
-	/* print the header on top */
-	for (j = Ship.quady - 1; j <= Ship.quady + 1; j++)
-	{
-		if (j < 0 || j >= NQUADS)
-			printf("      ");
-		else
-			printf("     %1d", j);
-	}
+    /* print the header on top */
+    for (j = Ship.quady - 1; j <= Ship.quady + 1; j++)
+    {
+        if (j < 0 || j >= NQUADS)
+            printf("      ");
+        else
+            printf("     %1d", j);
+    }
 
-	/* scan the quadrants */
-	for (i = Ship.quadx - 1; i <= Ship.quadx + 1; i++)
-	{
-		printf("\n  -------------------\n");
-		if (i < 0 || i >= NQUADS)
-		{
-			/* negative energy barrier */
-			printf("  !  *  !  *  !  *  !");
-			continue;
-		}
+    /* scan the quadrants */
+    for (i = Ship.quadx - 1; i <= Ship.quadx + 1; i++)
+    {
+        printf("\n  -------------------\n");
+        if (i < 0 || i >= NQUADS)
+        {
+            /* negative energy barrier */
+            printf("  !  *  !  *  !  *  !");
+            continue;
+        }
 
-		/* print the left hand margin */
-		printf("%1d !", i);
-		for (j = Ship.quady - 1; j <= Ship.quady + 1; j++)
-		{
-			if (j < 0 || j >= NQUADS)
-			{
-				/* negative energy barrier again */
-				printf("  *  !");
-				continue;
-			}
-			q = &Quad[i][j];
-			if (q->stars < 0)
-			{
-				/* supernova */
-				printf(" /// !");
-				q->scanned = 1000;
-				continue;
-			}
-			q->scanned = q->klings * 100 + q->bases * 10 + q->stars;
-			printf(" %3d !", q->scanned);
-		}
-	}
-	printf("\n  -------------------\n");
-	return;
+        /* print the left hand margin */
+        printf("%1d !", i);
+        for (j = Ship.quady - 1; j <= Ship.quady + 1; j++)
+        {
+            if (j < 0 || j >= NQUADS)
+            {
+                /* negative energy barrier again */
+                printf("  *  !");
+                continue;
+            }
+            q = &Quad[i][j];
+            if (q->stars < 0)
+            {
+                /* supernova */
+                printf(" /// !");
+                q->scanned = 1000;
+                continue;
+            }
+            q->scanned = q->klings * 100 + q->bases * 10 + q->stars;
+            printf(" %3d !", q->scanned);
+        }
+    }
+    printf("\n  -------------------\n");
 }

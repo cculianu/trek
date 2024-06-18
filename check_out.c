@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)check_out.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  CHECK IF A DEVICE IS OUT
@@ -48,22 +44,18 @@ static char sccsid[] = "@(#)check_out.c	5.4 (Berkeley) 6/1/90";
 **	It prints appropriate messages too.
 */
 
-int check_out(int device)
+int check_out(int dev)
 {
-	register int	dev;
+    /* check for device ok */
+    if (! damaged(dev))
+        return 0;
 
-	dev = device;
+    /* report it as being dead */
+    out(dev);
 
-	/* check for device ok */
-	if (!damaged(dev))
-		return (0);
-
-	/* report it as being dead */
-	out(dev);
-
-	/* but if we are docked, we can go ahead anyhow */
-	if (Ship.cond != DOCKED)
-		return (1);
-	printf("  Using starbase %s\n", Device[dev].name);
-	return (0);
+    /* but if we are docked, we can go ahead anyhow */
+    if (Ship.cond != DOCKED)
+        return 1;
+    printf("  Using starbase %s\n", Device[dev].name);
+    return 0;
 }

@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)destruct.c	5.5 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  Self Destruct Sequence
@@ -59,56 +55,58 @@ static char sccsid[] = "@(#)destruct.c	5.5 (Berkeley) 6/1/90";
 
 void destruct(void)
 {
-	char		checkpass[15];
-	register int	i, j;
-	double		zap;
+    char   checkpass[15];
+    int    i, j;
+    double zap;
 
-        if (damaged(COMPUTER)) {
-            out(COMPUTER);
-            return;
-        }
-	printf("\n\07 --- WORKING ---\07\n");
-        sleep_secs(3);
-	/* output the count 10 9 8 7 6 */
-	for (i = 10; i > 5; i--)
-	{
-		for (j = 10;  j > i; j--)
-			printf("   ");
-		printf("%d\n", i);
-                sleep_secs(1);
-	}
-	/* check for password on new line only */
-	skiptonl(0);
-	getstrpar("Enter password verification", checkpass, 14, 0);
-        sleep_secs(2);
-        if (!sequal(checkpass, Game.passwd)) {
-            printf("Self destruct sequence aborted\n");
-            return;
-        }
-	printf("Password verified; self destruct sequence continues:\n");
-        sleep_secs(2);
-	/* output count 5 4 3 2 1 0 */
-	for (i = 5; i >= 0; i--)
-	{
-                sleep_secs(1);
-		for (j = 5; j > i; j--)
-			printf("   ");
-		printf("%d\n", i);
-	}
-        sleep_secs(2);
-	printf("\032\014***** %s destroyed *****\n", Ship.shipname);
-	Game.killed = 1;
-	/* let's see what we can blow up!!!! */
-	zap = 20.0 * Ship.energy;
-	Game.deaths += Ship.crew;
-	for (i = 0; i < Etc.nkling; )
-	{
-		if (Etc.klingon[i].power * Etc.klingon[i].dist <= zap)
-			killk(Etc.klingon[i].x, Etc.klingon[i].y);
-		else
-			i++;
-	}
-	/* if we didn't kill the last Klingon (detected by killk), */
-	/* then we lose.... */
-	lose(L_DSTRCT);
+    if (damaged(COMPUTER))
+    {
+        out(COMPUTER);
+        return;
+    }
+    printf("\n\07 --- WORKING ---\07\n");
+    sleep_secs(3);
+    /* output the count 10 9 8 7 6 */
+    for (i = 10; i > 5; i--)
+    {
+        for (j = 10; j > i; j--)
+            printf("   ");
+        printf("%d\n", i);
+        sleep_secs(1);
+    }
+    /* check for password on new line only */
+    skiptonl(0);
+    getstrpar("Enter password verification", checkpass, 14, 0);
+    sleep_secs(2);
+    if (! sequal(checkpass, Game.passwd))
+    {
+        printf("Self destruct sequence aborted\n");
+        return;
+    }
+    printf("Password verified; self destruct sequence continues:\n");
+    sleep_secs(2);
+    /* output count 5 4 3 2 1 0 */
+    for (i = 5; i >= 0; i--)
+    {
+        sleep_secs(1);
+        for (j = 5; j > i; j--)
+            printf("   ");
+        printf("%d\n", i);
+    }
+    sleep_secs(2);
+    printf("\032\014***** %s destroyed *****\n", Ship.shipname);
+    Game.killed = 1;
+    /* let's see what we can blow up!!!! */
+    zap = 20.0 * Ship.energy;
+    Game.deaths += Ship.crew;
+    for (i = 0; i < Etc.nkling;)
+    {
+        if (Etc.klingon[i].power * Etc.klingon[i].dist <= zap)
+            killk(Etc.klingon[i].x, Etc.klingon[i].y);
+        else
+            i++;
+    }
+    /* if we didn't kill the last Klingon (detected by killk), */
+    /* then we lose.... */
+    lose(L_DSTRCT);
 }

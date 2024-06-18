@@ -31,12 +31,9 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)lose.c	5.6 (Berkeley) 6/26/90";
-#endif /* not lint */
+#include <setjmp.h>
 
-# include	"trek.h"
-# include	<setjmp.h>
+#include "trek.h"
 
 /*
 **  PRINT OUT LOSER MESSAGES
@@ -46,39 +43,37 @@ static char sccsid[] = "@(#)lose.c	5.6 (Berkeley) 6/26/90";
 **	actions which need be taken are taken.
 */
 
-char	*Losemsg[] =
-{
-	"You ran out of time",
-	"You ran out of energy",
-	"You have been destroyed",
-	"You ran into the negative energy barrier",
-	"You destroyed yourself by nova'ing that star",
-	"You have been caught in a supernova",
-	"You just suffocated in outer space",
-	"You could not be rematerialized",
-	"\n\032\014 ***\07 Ship's hull has imploded\07 ***",
-	"You have burned up in a star",
-	"Well, you destroyed yourself, but it didn't do any good",
-	"You have been captured by Klingons and mercilessly tortured",
-	"Your last crew member died",
+static const char *Losemsg[] = {
+    "You ran out of time",
+    "You ran out of energy",
+    "You have been destroyed",
+    "You ran into the negative energy barrier",
+    "You destroyed yourself by nova'ing that star",
+    "You have been caught in a supernova",
+    "You just suffocated in outer space",
+    "You could not be rematerialized",
+    "\n\032\014 ***\07 Ship's hull has imploded\07 ***",
+    "You have burned up in a star",
+    "Well, you destroyed yourself, but it didn't do any good",
+    "You have been captured by Klingons and mercilessly tortured",
+    "Your last crew member died",
 };
 
 void lose(int why)
 {
-	extern jmp_buf	env;
+    extern jmp_buf env;
 
-	Game.killed = 1;
-        sleep_secs(1);
-	printf("\n%s\n", Losemsg[why - 1]);
-	switch (why)
-	{
-
-	  case L_NOTIME:
-		Game.killed = 0;
-		break;
-	}
-	Move.endgame = -1;
-	score();
-	skiptonl(0);
-	longjmp(env, 1);
+    Game.killed = 1;
+    sleep_secs(1);
+    printf("\n%s\n", Losemsg[why - 1]);
+    switch (why)
+    {
+        case L_NOTIME:
+            Game.killed = 0;
+            break;
+    }
+    Move.endgame = -1;
+    score();
+    skiptonl(0);
+    longjmp(env, 1);
 }

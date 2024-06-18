@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)setwarp.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  SET WARP FACTOR
@@ -46,22 +42,24 @@ static char sccsid[] = "@(#)setwarp.c	5.4 (Berkeley) 6/1/90";
 
 void setwarp(void)
 {
-	double	warpfac;
+    double warpfac;
 
-	warpfac = getfltpar("Warp factor");
-	if (warpfac < 0.0)
-		return;
-        if (warpfac < 1.0) {
-            printf("Minimum warp speed is 1.0\n");
-            return;
-        }
-        if (warpfac > 10.0) {
-            printf("Maximum speed is warp 10.0\n");
-            return;
-        }
-	if (warpfac > 6.0)
-		printf("Damage to warp engines may occur above warp 6.0\n");
-	Ship.warp = warpfac;
-	Ship.warp2 = Ship.warp * warpfac;
-	Ship.warp3 = Ship.warp2 * warpfac;
+    warpfac = getfltpar("Warp factor");
+    if (warpfac < 0.0)
+        return;
+    if (warpfac < 1.0)
+    {
+        printf("Minimum warp speed is 1.0\n");
+        return;
+    }
+    if (warpfac > 10.0)
+    {
+        printf("Maximum speed is warp 10.0\n");
+        return;
+    }
+    if (warpfac > 6.0)
+        printf("Damage to warp engines may occur above warp 6.0\n");
+    Ship.warp = warpfac;
+    Ship.warp2 = Ship.warp * warpfac;
+    Ship.warp3 = Ship.warp2 * warpfac;
 }

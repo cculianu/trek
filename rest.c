@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)rest.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  REST FOR REPAIRS
@@ -53,27 +49,26 @@ static char sccsid[] = "@(#)rest.c	5.4 (Berkeley) 6/1/90";
 
 void rest(void)
 {
-	double			t;
-	register int		percent;
+    double t;
+    int    percent;
 
-	/* get the time to rest */
-	t = getfltpar("How long");
-	if (t <= 0.0)
-		return;
-	percent = 100 * t / Now.time + 0.5;
-	if (percent >= 70)
-	{
-		printf("Spock: That would take %d%% of our remaining time.\n",
-			percent);
-		if (!getynpar("Are you really certain that is wise"))
-			return;
-	}
-	Move.time = t;
+    /* get the time to rest */
+    t = getfltpar("How long");
+    if (t <= 0.0)
+        return;
+    percent = 100 * t / Now.time + 0.5;
+    if (percent >= 70)
+    {
+        printf("Spock: That would take %d%% of our remaining time.\n", percent);
+        if (! getynpar("Are you really certain that is wise"))
+            return;
+    }
+    Move.time = t;
 
-	/* boundary condition is the LRTB */
-	t = Now.eventptr[E_LRTB]->date - Now.date;
-	if (Ship.cond != DOCKED && Move.time > t)
-		Move.time = t + 0.0001;
-	Move.free = 0;
-	Move.resting = 1;
+    /* boundary condition is the LRTB */
+    t = Now.eventptr[E_LRTB]->date - Now.date;
+    if (Ship.cond != DOCKED && Move.time > t)
+        Move.time = t + 0.0001;
+    Move.free = 0;
+    Move.resting = 1;
 }

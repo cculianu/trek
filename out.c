@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)out.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  Announce Device Out
@@ -43,13 +39,13 @@ static char sccsid[] = "@(#)out.c	5.4 (Berkeley) 6/1/90";
 
 void out(int dev)
 {
-    struct device	*d;
+    struct device *d;
 
     d = &Device[dev];
     printf("%s reports %s ", d->person, d->name);
     if (d->name[length(d->name) - 1] == 's')
-            printf("are");
+        printf("are");
     else
-            printf("is");
+        printf("is");
     printf(" damaged\n");
 }

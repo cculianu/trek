@@ -31,38 +31,32 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)dumpgame.c	4.6 (Berkeley) 6/1/90";
-#endif /* not lint */
+#include "trek.h"
 
-# include	"trek.h"
-# include       <string.h> /* for memcpy */
 /***  THIS CONSTANT MUST CHANGE AS THE DATA SPACES CHANGE ***/
-# define	VERSION		3
+#define VERSION 3
 
 struct dump
 {
     uint16_t code;
-    void     *area;
+    void    *area;
     size_t   count;
 };
 
-
-struct dump	Dump_template[] =
-{
-    { 0x1234, &Ship,	sizeof(Ship) },
-    { 0x5678, &Now,	sizeof(Now) },
-    { 0x9abc, &Param,	sizeof(Param) },
-    { 0xdef0, &Etc,	sizeof(Etc) },
-    { 0xf123, &Game,	sizeof(Game) },
-    { 0x4567, Sect,	sizeof(Sect) },
-    { 0x89ab, Quad,	sizeof(Quad) },
-    { 0xcdef, &Move,	sizeof(Move) },
-    { 0xb33f, Event,	sizeof(Event) },
-    {0, 0, 0},
+static struct dump Dump_template[] = {
+    {0x1234, &Ship,  sizeof(Ship) },
+    {0x5678, &Now,   sizeof(Now)  },
+    {0x9abc, &Param, sizeof(Param)},
+    {0xdef0, &Etc,   sizeof(Etc)  },
+    {0xf123, &Game,  sizeof(Game) },
+    {0x4567, Sect,   sizeof(Sect) },
+    {0x89ab, Quad,   sizeof(Quad) },
+    {0xcdef, &Move,  sizeof(Move) },
+    {0xb33f, Event,  sizeof(Event)},
+    {0,      0,      0            },
 };
 
-static const char *const dumpfile = "trek.dump";
+static const char * const dumpfile = "trek.dump";
 
 /*
 **  DUMP GAME
@@ -76,28 +70,31 @@ static const char *const dumpfile = "trek.dump";
 
 void dumpgame(void)
 {
-    int         version;
+    int          version;
     FILE        *of;
     struct dump *d;
-    int error = 0;
+    int          error = 0;
 
-    if ( ! (of = fopen(dumpfile, "wb"))) {
+    if (! (of = fopen(dumpfile, "wb")))
+    {
         printf("cannot open dump file for writing: %s\n", dumpfile);
         return;
     }
     /* write version int */
     version = VERSION;
-    if (fwrite(&version, 1, sizeof(version), of) != sizeof(version)) {
+    if (fwrite(&version, 1, sizeof(version), of) != sizeof(version))
+    {
         error = 1;
     }
 
     /* output the main data areas */
-    for (d = Dump_template; !error && d->area; ++d)
+    for (d = Dump_template; ! error && d->area; ++d)
     {
-        error =    fwrite(&d->code, 1, sizeof(d->code), of) != sizeof(d->code)
+        error = fwrite(&d->code, 1, sizeof(d->code), of) != sizeof(d->code)
                 || fwrite(&d->count, 1, sizeof(d->count), of) != sizeof(d->count);
 
-        if (error) continue;
+        if (error)
+            continue;
 
         if (d->area == &Now)
             /* temporarily modify Now to use indices for serialization */
@@ -133,24 +130,24 @@ static int readdump(FILE *fin);
 int restartgame(void)
 {
     FILE *fin = NULL;
-    int version = ~VERSION, ret = 0;
+    int   version = ~VERSION, ret = 0;
 
-    if (   (fin = fopen(dumpfile, "rb")) == NULL
-        || fread(&version, 1, sizeof(version), fin) != sizeof(version)
-        || version != VERSION
-        || readdump(fin) != 0)
+    if ((fin = fopen(dumpfile, "rb")) == NULL || fread(&version, 1, sizeof(version), fin) != sizeof(version)
+        || version != VERSION || readdump(fin) != 0)
     {
         printf("cannot restart from dumpfile: %s\n", dumpfile);
         ret = 1;
-    } else {
+    }
+    else
+    {
         printf("restored game from dumpfile: %s\n", dumpfile);
         ret = 0;
     }
 
-    if (fin) fclose(fin);
+    if (fin)
+        fclose(fin);
     return ret;
 }
-
 
 /*
 **  READ DUMP
@@ -163,16 +160,14 @@ int restartgame(void)
 
 static int readdump(FILE *fin)
 {
-    struct dump	*d;
-    uint16_t code;
-    size_t count;
+    struct dump *d;
+    uint16_t     code;
+    size_t       count;
 
     for (d = Dump_template; d->area; ++d)
     {
-        if (   fread(&code, 1, sizeof(code), fin) != sizeof(code)
-            || code != d->code
-            || fread(&count, 1, sizeof(count), fin) != sizeof(count)
-            || count != d->count
+        if (fread(&code, 1, sizeof(code), fin) != sizeof(code) || code != d->code
+            || fread(&count, 1, sizeof(count), fin) != sizeof(count) || count != d->count
             || fread(d->area, 1, count, fin) != count)
             return 1;
         if (d->area == &Now)
@@ -181,21 +176,20 @@ static int readdump(FILE *fin)
     }
 
     /* make quite certain we are at EOF */
-    return   feof(fin) || fread(&count, 1, 1, fin) == 0
-           ? 0
-           : 1;
+    return feof(fin) || fread(&count, 1, 1, fin) == 0 ? 0 : 1;
 }
 
 static const size_t INVALID_EVT_IDX = ~(size_t)0u;
 
 void serialize_S_Now(void *dest, const struct S_Now *src)
 {
-    size_t i;
+    size_t       i;
     struct S_Now tmp;
 
     memcpy(&tmp, src, sizeof(tmp));
 
-    for (i = 0; i < (size_t)NEVENTS; ++i) {
+    for (i = 0; i < (size_t)NEVENTS; ++i)
+    {
         size_t idx = INVALID_EVT_IDX;
         if (tmp.eventptr[i])
             idx = tmp.eventptr[i] - &Event[0];
@@ -209,16 +203,20 @@ void serialize_S_Now(void *dest, const struct S_Now *src)
 
 void unserialize_S_Now(struct S_Now *dest, const void *src)
 {
-    size_t i;
+    size_t       i;
     struct S_Now tmp;
 
     memcpy(&tmp, src, sizeof(tmp));
 
-    for (i = 0; i < NEVENTS; ++i) {
+    for (i = 0; i < NEVENTS; ++i)
+    {
         const size_t idx = tmp.eventidx[i];
-        if (idx != INVALID_EVT_IDX && idx < MAXEVENTS) {
+        if (idx != INVALID_EVT_IDX && idx < MAXEVENTS)
+        {
             tmp.eventptr[i] = &Event[idx];
-        } else {
+        }
+        else
+        {
             tmp.eventptr[i] = 0;
         }
     }

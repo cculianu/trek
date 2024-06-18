@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)getcodi.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"getpar.h"
+#include "getpar.h"
 
 /*
 **  get course and distance
@@ -47,20 +43,19 @@ static char sccsid[] = "@(#)getcodi.c	5.4 (Berkeley) 6/1/90";
 **	(meaning to drop the request).
 */
 
-int getcodi(int* co, double* di)
+int getcodi(int *co, double *di)
 {
+    *co = getintpar("Course");
 
-	*co = getintpar("Course");
+    /* course must be in the interval [0, 360] */
+    if (*co < 0 || *co > 360)
+        return 1;
+    *di = getfltpar("Distance");
 
-	/* course must be in the interval [0, 360] */
-	if (*co < 0 || *co > 360)
-                return 1;
-	*di = getfltpar("Distance");
+    /* distance must be in the interval [0, 15] */
+    if (*di <= 0.0 || *di > 15.0)
+        return 1;
 
-	/* distance must be in the interval [0, 15] */
-	if (*di <= 0.0 || *di > 15.0)
-                return 1;
-
-	/* good return */
-        return 0;
+    /* good return */
+    return 0;
 }

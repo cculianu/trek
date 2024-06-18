@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)ram.c	5.5 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  RAM SOME OBJECT
@@ -50,52 +46,52 @@ static char sccsid[] = "@(#)ram.c	5.5 (Berkeley) 6/1/90";
 
 void ram(int ix, int iy)
 {
-	register int		i;
-	register char		c;
+    int  i;
+    char c;
 
-	printf("\07RED ALERT\07: collision imminent\n");
-	c = Sect[ix][iy];
-	switch (c)
-	{
+    printf("\07RED ALERT\07: collision imminent\n");
+    c = Sect[ix][iy];
+    switch (c)
+    {
 
-	  case KLINGON:
-		printf("%s rams Klingon at %d,%d\n", Ship.shipname, ix, iy);
-		killk(ix, iy);
-		break;
+        case KLINGON:
+            printf("%s rams Klingon at %d,%d\n", Ship.shipname, ix, iy);
+            killk(ix, iy);
+            break;
 
-	  case STAR:
-	  case INHABIT:
-		printf("Yeoman Rand: Captain, isn't it getting hot in here?\n");
-                sleep_secs(2);
-		printf("Spock: Hull temperature approaching 550 Degrees Kelvin.\n");
-                lose(L_STAR); /* does not return, jumps to main. */
-                break;
+        case STAR:
+        case INHABIT:
+            printf("Yeoman Rand: Captain, isn't it getting hot in here?\n");
+            sleep_secs(2);
+            printf("Spock: Hull temperature approaching 550 Degrees Kelvin.\n");
+            lose(L_STAR); /* does not return, jumps to main. */
+            break;
 
-	  case BASE:
-		printf("You ran into the starbase at %d,%d\n", ix, iy);
-		killb(Ship.quadx, Ship.quady);
-		/* don't penalize the captain if it wasn't his fault */
-		if (!damaged(SINS))
-			Game.killb += 1;
-		break;
-	}
-        sleep_secs(2);
-	printf("%s heavily damaged\n", Ship.shipname);
+        case BASE:
+            printf("You ran into the starbase at %d,%d\n", ix, iy);
+            killb(Ship.quadx, Ship.quady);
+            /* don't penalize the captain if it wasn't his fault */
+            if (! damaged(SINS))
+                Game.killb += 1;
+            break;
+    }
+    sleep_secs(2);
+    printf("%s heavily damaged\n", Ship.shipname);
 
-	/* select the number of deaths to occur */
-	i = 10 + ranf(20 * Game.skill);
-	Game.deaths += i;
-	Ship.crew -= i;
-	printf("McCoy: Take it easy Jim; we had %d casualties.\n", i);
+    /* select the number of deaths to occur */
+    i = 10 + ranf(20 * Game.skill);
+    Game.deaths += i;
+    Ship.crew -= i;
+    printf("McCoy: Take it easy Jim; we had %d casualties.\n", i);
 
-	/* damage devices with an 80% probability */
-	for (i = 0; i < NDEV; i++)
-	{
-		if (ranf(100) < 20)
-			continue;
-		damage(i, (2.5 * (franf() + franf()) + 1.0) * Param.damfac[i]);
-	}
+    /* damage devices with an 80% probability */
+    for (i = 0; i < NDEV; i++)
+    {
+        if (ranf(100) < 20)
+            continue;
+        damage(i, (2.5 * (franf() + franf()) + 1.0) * Param.damfac[i]);
+    }
 
-	/* no chance that your shields remained up in all that */
-	Ship.shldup = 0;
+    /* no chance that your shields remained up in all that */
+    Ship.shldup = 0;
 }

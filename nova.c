@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)nova.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  CAUSE A NOVA TO OCCUR
@@ -53,91 +49,91 @@ static char sccsid[] = "@(#)nova.c	5.4 (Berkeley) 6/1/90";
 
 void nova(int x, int y)
 {
-	register int		i, j;
-	register int		se;
+    int i, j;
+    int se;
 
-	if (Sect[x][y] != STAR || Quad[Ship.quadx][Ship.quady].stars < 0)
-		return;
-	if (ranf(100) < 15)
-	{
-		printf("Spock: Star at %d,%d failed to nova.\n", x, y);
-		return;
-	}
-        if (ranf(100) < 5) {
-            snova(x, y);
-            return;
+    if (Sect[x][y] != STAR || Quad[Ship.quadx][Ship.quady].stars < 0)
+        return;
+    if (ranf(100) < 15)
+    {
+        printf("Spock: Star at %d,%d failed to nova.\n", x, y);
+        return;
+    }
+    if (ranf(100) < 5)
+    {
+        snova(x, y);
+        return;
+    }
+    printf("Spock: Star at %d,%d gone nova\n", x, y);
+
+    if (ranf(4) != 0)
+        Sect[x][y] = EMPTY;
+    else
+    {
+        Sect[x][y] = HOLE;
+        Quad[Ship.quadx][Ship.quady].holes += 1;
+    }
+    Quad[Ship.quadx][Ship.quady].stars -= 1;
+    Game.kills += 1;
+    for (i = x - 1; i <= x + 1; i++)
+    {
+        if (i < 0 || i >= NSECTS)
+            continue;
+        for (j = y - 1; j <= y + 1; j++)
+        {
+            if (j < 0 || j >= NSECTS)
+                continue;
+            se = Sect[i][j];
+            switch (se)
+            {
+
+                case EMPTY:
+                case HOLE:
+                    break;
+
+                case KLINGON:
+                    killk(i, j);
+                    break;
+
+                case STAR:
+                    nova(i, j);
+                    break;
+
+                case INHABIT:
+                    kills(i, j, -1);
+                    break;
+
+                case BASE:
+                    killb(i, j);
+                    Game.killb += 1;
+                    break;
+
+                case ENTERPRISE:
+                case QUEENE:
+                    se = 2000;
+                    if (Ship.shldup)
+                    {
+                        if (Ship.shield >= se)
+                        {
+                            Ship.shield -= se;
+                            se = 0;
+                        }
+                        else
+                        {
+                            se -= Ship.shield;
+                            Ship.shield = 0;
+                        }
+                    }
+                    Ship.energy -= se;
+                    if (Ship.energy <= 0)
+                        lose(L_SUICID);
+                    break;
+
+                default:
+                    printf("Unknown object %c at %d,%d destroyed\n", se, i, j);
+                    Sect[i][j] = EMPTY;
+                    break;
+            }
         }
-	printf("Spock: Star at %d,%d gone nova\n", x, y);
-
-	if (ranf(4) != 0)
-		Sect[x][y] = EMPTY;
-	else
-	{
-		Sect[x][y] = HOLE;
-		Quad[Ship.quadx][Ship.quady].holes += 1;
-	}
-	Quad[Ship.quadx][Ship.quady].stars -= 1;
-	Game.kills += 1;
-	for (i = x - 1; i <= x + 1; i++)
-	{
-		if (i < 0 || i >= NSECTS)
-			continue;
-		for (j = y - 1; j <= y + 1; j++)
-		{
-			if (j < 0 || j >= NSECTS)
-				continue;
-			se = Sect[i][j];
-			switch (se)
-			{
-
-			  case EMPTY:
-			  case HOLE:
-				break;
-
-			  case KLINGON:
-				killk(i, j);
-				break;
-
-			  case STAR:
-				nova(i, j);
-				break;
-
-			  case INHABIT:
-				kills(i, j, -1);
-				break;
-
-			  case BASE:
-				killb(i, j);
-				Game.killb += 1;
-				break;
-
-			  case ENTERPRISE:
-			  case QUEENE:
-				se = 2000;
-                                if (Ship.shldup) {
-					if (Ship.shield >= se)
-					{
-						Ship.shield -= se;
-						se = 0;
-					}
-					else
-					{
-						se -= Ship.shield;
-						Ship.shield = 0;
-					}
-                                }
-				Ship.energy -= se;
-				if (Ship.energy <= 0)
-					lose(L_SUICID);
-				break;
-
-			  default:
-				printf("Unknown object %c at %d,%d destroyed\n",
-					se, i, j);
-				Sect[i][j] = EMPTY;
-				break;
-			}
-		}
-	}
-	return;
+    }
 }

@@ -31,81 +31,75 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)externs.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **	global variable definitions
 */
 
-struct device	Device[NDEV] =
-{
-    {"warp drive",		"Scotty"},
-    {"S.R. scanners",           "Scotty"},
-    {"L.R. scanners",           "Scotty"},
-    {"phasers",                 "Sulu"},
-    {"photon tubes",		"Sulu"},
-    {"impulse engines",         "Scotty"},
-    {"shield control",          "Sulu"},
-    {"computer",		"Spock"},
-    {"subspace radio",          "Uhura"},
-    {"life support",		"Scotty"},
-    {"navigation system",	"Chekov"},
-    {"cloaking device",         "Scotty"},
-    {"transporter",		"Scotty"},
-    {"shuttlecraft",		"Scotty"},
-    {"*ERR 14*",		"Nobody"},
-    {"*ERR 15*",		"Nobody"},
+struct device Device[NDEV] = {
+    {"warp drive",        "Scotty"},
+    {"S.R. scanners",     "Scotty"},
+    {"L.R. scanners",     "Scotty"},
+    {"phasers",           "Sulu"  },
+    {"photon tubes",      "Sulu"  },
+    {"impulse engines",   "Scotty"},
+    {"shield control",    "Sulu"  },
+    {"computer",          "Spock" },
+    {"subspace radio",    "Uhura" },
+    {"life support",      "Scotty"},
+    {"navigation system", "Chekov"},
+    {"cloaking device",   "Scotty"},
+    {"transporter",       "Scotty"},
+    {"shuttlecraft",      "Scotty"},
+    {"*ERR 14*",          "Nobody"},
+    {"*ERR 15*",          "Nobody"},
 };
 
-const char  *Systemname[NINHAB] =
-{
-	"ERROR",
-	"Talos IV",
-	"Rigel III",
-	"Deneb VII",
-	"Canopus V",
-	"Icarus I",
-	"Prometheus II",
-	"Omega VII",
-	"Elysium I",
-	"Scalos IV",
-	"Procyon IV",
-	"Arachnid I",
-	"Argo VIII",
-	"Triad III",
-	"Echo IV",
-	"Nimrod III",
-	"Nemisis IV",
-	"Centarurus I",
-	"Kronos III",
-	"Spectros V",
-	"Beta III",
-	"Gamma Tranguli VI",
-	"Pyris III",
-	"Triachus",
-	"Marcus XII",
-	"Kaland",
-	"Ardana",
-	"Stratos",
-	"Eden",
-	"Arrikis",
-	"Epsilon Eridani IV",
-	"Exo III"
+const char *Systemname[NINHAB] = {
+    "ERROR",
+    "Talos IV",
+    "Rigel III",
+    "Deneb VII",
+    "Canopus V",
+    "Icarus I",
+    "Prometheus II",
+    "Omega VII",
+    "Elysium I",
+    "Scalos IV",
+    "Procyon IV",
+    "Arachnid I",
+    "Argo VIII",
+    "Triad III",
+    "Echo IV",
+    "Nimrod III",
+    "Nemisis IV",
+    "Centarurus I",
+    "Kronos III",
+    "Spectros V",
+    "Beta III",
+    "Gamma Tranguli VI",
+    "Pyris III",
+    "Triachus",
+    "Marcus XII",
+    "Kaland",
+    "Ardana",
+    "Stratos",
+    "Eden",
+    "Arrikis",
+    "Epsilon Eridani IV",
+    "Exo III",
 };
 
 /* Below definitions were added by Calin to prevent some compilers
  * from complaining about dupe symbols: */
-struct quad Quad[NQUADS][NQUADS];
-char Sect[NSECTS][NSECTS];
-struct event Event[MAXEVENTS];
-struct S_Ship Ship;
-struct S_Game Game;
-struct S_Move Move;
+struct quad    Quad[NQUADS][NQUADS];
+char           Sect[NSECTS][NSECTS];
+struct event   Event[MAXEVENTS];
+struct S_Ship  Ship;
+struct S_Game  Game;
+struct S_Move  Move;
 struct S_Param Param;
-struct S_Now Now;
-struct S_Etc Etc;
-int Trace = 0;
+struct S_Now   Now;
+struct S_Etc   Etc;
+int            Trace = 0;

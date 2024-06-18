@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)autover.c	5.5 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  Automatic Override
@@ -57,21 +53,21 @@ static char sccsid[] = "@(#)autover.c	5.5 (Berkeley) 6/1/90";
 
 void autover(void)
 {
-	double			dist;
-	register int		course;
+    double dist;
+    int    course;
 
-	printf("\07RED ALERT:  The %s is in a supernova quadrant\n", Ship.shipname);
-	printf("***  Emergency override attempts to hurl %s to safety\n", Ship.shipname);
-	/* let's get our ass out of here */
-	Ship.warp = 6.0 + 2.0 * franf();
-	Ship.warp2 = Ship.warp * Ship.warp;
-	Ship.warp3 = Ship.warp2 * Ship.warp;
-	dist = 0.75 * Ship.energy / (Ship.warp3 * (Ship.shldup + 1));
-	if (dist > 1.4142)
-		dist = 1.4142;
-	course = ranf(360);
-	Etc.nkling = -1;
-	Ship.cond = RED;
-	warp(-1, course, dist);
-	attack(0);
+    printf("\07RED ALERT:  The %s is in a supernova quadrant\n", Ship.shipname);
+    printf("***  Emergency override attempts to hurl %s to safety\n", Ship.shipname);
+    /* let's get our ass out of here */
+    Ship.warp = 6.0 + 2.0 * franf();
+    Ship.warp2 = Ship.warp * Ship.warp;
+    Ship.warp3 = Ship.warp2 * Ship.warp;
+    dist = 0.75 * Ship.energy / (Ship.warp3 * (Ship.shldup + 1));
+    if (dist > 1.4142)
+        dist = 1.4142;
+    course = ranf(360);
+    Etc.nkling = -1;
+    Ship.cond = RED;
+    warp(-1, course, dist);
+    attack(0);
 }

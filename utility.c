@@ -31,20 +31,16 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)utility.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
+#include <errno.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 #if defined(HAVE_UNISTD_H)
-#include <unistd.h>
+#    include <unistd.h>
 #elif defined(_WIN32)
-#include <windows.h>
+#    include <windows.h>
 #endif
 
 /*
@@ -63,12 +59,11 @@ static char sccsid[] = "@(#)utility.c	5.4 (Berkeley) 6/1/90";
 void *bmove(const void *a1, void *b1, size_t l)
 {
     const char *a = a1;
-    char *b = b1;
+    char       *b = b1;
     while (l--)
         *b++ = *a++;
     return b;
 }
-
 
 /*
 **  STRING EQUALITY TEST
@@ -79,16 +74,11 @@ void *bmove(const void *a1, void *b1, size_t l)
 
 int sequal(const char *a, const char *b)
 {
-        register const char	*p, *q;
-
-	p = a;
-	q = b;
-	while (*p || *q)
-		if (*p++ != *q++)
-			return(0);
-	return(1);
+    while (*a || *b)
+        if (*a++ != *b++)
+            return 0;
+    return 1;
 }
-
 
 /*
 **  STRING CONCATENATE
@@ -101,20 +91,19 @@ int sequal(const char *a, const char *b)
 
 char *concat(const char *s1, const char *s2, char *s3)
 {
-        register       char	*p;
-        register const char	*q;
+    char       *p;
+    const char *q;
 
-	p = s3;
-	q = s1;
-	while (*q)
-		*p++ = *q++;
-	q = s2;
-	while (*q)
-		*p++ = *q++;
-	*p = 0;
-	return (p);
+    p = s3;
+    q = s1;
+    while (*q)
+        *p++ = *q++;
+    q = s2;
+    while (*q)
+        *p++ = *q++;
+    *p = 0;
+    return p;
 }
-
 
 void syserr(const char *fmt, ...)
 {
@@ -145,6 +134,6 @@ void sleep_secs(unsigned seconds)
 #elif defined(_WIN32)
     Sleep(seconds * 1000u);
 #else
-#error "Unknown platform!"
+#    error "Unknown platform!"
 #endif
 }

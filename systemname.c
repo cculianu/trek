@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)systemname.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  RETRIEVE THE STARSYSTEM NAME
@@ -58,12 +54,6 @@ static const char *systemname_common(int i)
     return Systemname[i];
 }
 
-const char *systemname(struct quad *q1)
-{
-    return systemname_common(q1->qsystemname);
-}
+const char *systemname(struct quad *q) { return systemname_common(q->qsystemname); }
 
-const char *systemname_e(struct event *e1)
-{
-    return systemname_common(e1->systemname);
-}
+const char *systemname_e(struct event *e) { return systemname_common(e->systemname); }

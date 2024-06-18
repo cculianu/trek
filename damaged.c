@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)damaged.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*  DAMAGED -- check for device damaged
 **
@@ -46,21 +42,18 @@ static char sccsid[] = "@(#)damaged.c	5.4 (Berkeley) 6/1/90";
 
 int damaged(int dev)
 {
-	register int		d;
-	register struct event	*e;
-	register int		i;
+    struct event *e;
+    int           i;
 
-	d = dev;
+    for (i = 0; i < MAXEVENTS; i++)
+    {
+        e = &Event[i];
+        if (e->evcode != E_FIXDV)
+            continue;
+        if (e->systemname == dev)
+            return 1;
+    }
 
-	for (i = 0; i < MAXEVENTS; i++)
-	{
-		e = &Event[i];
-		if (e->evcode != E_FIXDV)
-			continue;
-		if (e->systemname == d)
-			return (1);
-	}
-
-	/* device fix not in event list -- device must not be broken */
-	return (0);
+    /* device fix not in event list -- device must not be broken */
+    return 0;
 }

@@ -31,15 +31,11 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)ranf.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-#include       <stdint.h>
-#include       <stdlib.h>
-#  ifdef USE_LIBBSD /* Linux has this defined */
-#    include       <bsd/stdlib.h> /* For arc4random() */
-#  endif
+#include <stdint.h>
+#include <stdlib.h>
+#ifdef USE_LIBBSD           /* Linux has this defined */
+#    include <bsd/stdlib.h> /* For arc4random() */
+#endif
 
 #include "trek.h"
 
@@ -54,7 +50,6 @@ int ranf(int max)
 #endif
     return rand() % max;
 }
-
 
 double franf(void)
 {

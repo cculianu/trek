@@ -31,27 +31,14 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-char copyright[] =
-"@(#) Copyright (c) 1980 Regents of the University of California.\n\
- All rights reserved.\n";
-#endif /* not lint */
-
-#ifndef lint
-static char sccsid[] = "@(#)main.c	5.7 (Berkeley) 2/28/91";
-#endif /* not lint */
-
-# include	"trek.h"
 /* Non-portable: # include	<sgtty.h> */
-# include	<setjmp.h>
-# include       <time.h>
+#include <setjmp.h>
+#include <time.h>
 #ifdef HAVE_UNISTD_H
-# include <unistd.h>
+#    include <unistd.h>
 #endif
 
-# define	PRIO		00	/* default priority */
-
-int	Mother	= 51 + (51 << 8);
+#include "trek.h"
 
 /*
 **	 ####  #####    #    ####          #####  ####   #####  #   #
@@ -150,96 +137,99 @@ int	Mother	= 51 + (51 << 8);
 ***********************************************************************
 */
 
+/* UNUSED: #define PRIO 00 */ /* default priority */
+
+int Mother = 51 + (51 << 8);
+
 jmp_buf env;
 
-int main(int argc, char* *argv)
+int main(int argc, char **argv)
 {
-	/* extern FILE		*f_log; */
-        /* char		opencode = 'w'; <--- UNUSED, left in for historical purposes */
-        /* This is not used: int        prio = PRIO;*/
-	register int		ac;
-	register char		**av;
-	/* struct	sgttyb		argp; */ /*non-portable - see below */
+    /* extern FILE		*f_log; */
+    /* char		opencode = 'w'; <--- UNUSED, left in for historical purposes */
+    /* This is not used: int        prio = PRIO;*/
+    int    ac;
+    char **av;
+    /* struct	sgttyb		argp; */ /*non-portable - see below */
 
-	av = argv;
-	ac = argc;
-	av++;
-        /* Normally we don't use rand() unless in tournament mode or if we are missing arc4random().. but seed
-         * rand() anyway. */
-        srand(time(NULL));
-/* Comment out this ancient non-portable crap.  It should use termios anyway.
-#ifdef linux
-	if (ioctl(1, TIOCGETP, &argp) == 0)
-#else
-	if (gtty(1, &argp) == 0)
-#endif
-	{
-		if ((argp.sg_ispeed ) < B1200)
-			Etc.fast++;
-	}
-*/
-	while (ac > 1 && av[0][0] == '-')
-	{
-		switch (av[0][1])
-		{
-/* UNUSED
-                  case 'a':	/ * append to log file * /
-                        opencode = 'a';
-			break;
-*/
-		  case 'f':	/* set fast mode */
-			Etc.fast++;
-			break;
+    av = argv;
+    ac = argc;
+    av++;
+    /* Normally we don't use rand() unless in tournament mode or if we are missing arc4random().. but seed
+     * rand() anyway. */
+    srand(time(NULL));
+    /* Comment out this ancient non-portable crap.  It should use termios anyway.
+    #ifdef linux
+            if (ioctl(1, TIOCGETP, &argp) == 0)
+    #else
+            if (gtty(1, &argp) == 0)
+    #endif
+            {
+                    if ((argp.sg_ispeed ) < B1200)
+                            Etc.fast++;
+            }
+    */
+    while (ac > 1 && av[0][0] == '-')
+    {
+        switch (av[0][1])
+        {
+                /* UNUSED
+            case 'a':	/ * append to log file * /
+                opencode = 'a';
+                break;
+                */
+            case 'f': /* set fast mode */
+                Etc.fast++;
+                break;
 
-		  case 's':	/* set slow mode */
-			Etc.fast = 0;
-			break;
+            case 's': /* set slow mode */
+                Etc.fast = 0;
+                break;
 #ifdef HAVE_UNISTD_H
-#		ifdef xTRACE
-                  case 't':	/* trace */
-                        if (getuid() != (uid_t)Mother)
-                            goto badflag;
-                        Trace++;
-                        break;
-#		endif
+#    ifdef xTRACE
+            case 't': /* trace */
+                if (getuid() != (uid_t)Mother)
+                    goto badflag;
+                Trace++;
+                break;
+#    endif
 #endif
-/* UNUSED
-                  case 'p':	/ * set priority * /
-			if (getuid() != Mother)
-				goto badflag;
-			prio = atoi(av[0] + 2);
-			break;
-*/
-                  default:
+                /* UNUSED
+                                  case 'p':	/ * set priority * /
+                                        if (getuid() != Mother)
+                                                goto badflag;
+                                        prio = atoi(av[0] + 2);
+                                        break;
+                */
+            default:
 #if HAVE_UNISTD_H
-                  badflag:
+            badflag:
 #endif
-                        printf("Invalid option: %s\n", av[0]);
+                printf("Invalid option: %s\n", av[0]);
+        }
+        ac--;
+        av++;
+    }
+    if (ac > 2)
+        syserr("arg count");
+    /*
+if (ac > 1)
+    f_log = fopen(av[0], opencode);
+    */
 
-		}
-		ac--;
-		av++;
-	}
-	if (ac > 2)
-                syserr("arg count");
-		/*
-	if (ac > 1)
-		f_log = fopen(av[0], opencode);
-		*/
+    printf("\n   * * *   S T A R   T R E K   * * *\n\nPress return to continue.\n");
 
-	printf("\n   * * *   S T A R   T R E K   * * *\n\nPress return to continue.\n");
+    if (setjmp(env))
+    {
+        if (! getynpar("Another game"))
+            exit(0);
+    }
+    do
+    {
+        setup();
+        play();
+    } while (getynpar("Another game"));
 
-	if (setjmp(env))
-	{
-		if ( !getynpar("Another game") )
-			exit(0);
-	}
-	do
-	{
-		setup();
-		play();
-	} while (getynpar("Another game"));
-
-	fflush(stdout);
-        return 0;
+    fflush(stdout);
+    return 0;
 }

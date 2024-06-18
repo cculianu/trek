@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)dumpssradio.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /**
  **	output hidden distress calls
@@ -43,43 +39,39 @@ static char sccsid[] = "@(#)dumpssradio.c	5.4 (Berkeley) 6/1/90";
 
 int dumpssradio(void)
 {
-	register struct event	*e;
-	register int		j;
-	register int		chkrest;
+    struct event *e;
+    int           j;
+    int           chkrest;
 
-	chkrest = 0;
-	for (j = 0; j < MAXEVENTS; j++)
-	{
-		e = &Event[j];
-		/* if it is not hidden, then just ignore it */
-		if ((e->evcode & E_HIDDEN) == 0)
-			continue;
-		if (e->evcode & E_GHOST)
-		{
-			unschedule(e);
-			printf("Starsystem %s in quadrant %d,%d is no longer distressed\n",
-                                systemname_e(e), e->x, e->y);
-			continue;
-		}
+    chkrest = 0;
+    for (j = 0; j < MAXEVENTS; j++)
+    {
+        e = &Event[j];
+        /* if it is not hidden, then just ignore it */
+        if ((e->evcode & E_HIDDEN) == 0)
+            continue;
+        if (e->evcode & E_GHOST)
+        {
+            unschedule(e);
+            printf("Starsystem %s in quadrant %d,%d is no longer distressed\n", systemname_e(e), e->x, e->y);
+            continue;
+        }
 
-		switch (e->evcode)
-		{
+        switch (e->evcode)
+        {
 
-		  case E_KDESB:
-			printf("Starbase in quadrant %d,%d is under attack\n",
-				e->x, e->y);
-			chkrest++;
-			break;
+            case E_KDESB:
+                printf("Starbase in quadrant %d,%d is under attack\n", e->x, e->y);
+                chkrest++;
+                break;
 
-		  case E_ENSLV:
-		  case E_REPRO:
-			printf("Starsystem %s in quadrant %d,%d is distressed\n",
-                                systemname_e(e), e->x, e->y);
-			chkrest++;
-			break;
+            case E_ENSLV:
+            case E_REPRO:
+                printf("Starsystem %s in quadrant %d,%d is distressed\n", systemname_e(e), e->x, e->y);
+                chkrest++;
+                break;
+        }
+    }
 
-		}
-	}
-
-	return (chkrest);
+    return chkrest;
 }

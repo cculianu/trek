@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)abandon.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  Abandon Ship
@@ -64,99 +60,100 @@ static char sccsid[] = "@(#)abandon.c	5.4 (Berkeley) 6/1/90";
 
 void abandon(void)
 {
-	register struct quad	*q;
-	register int		i;
-	int			j;
-	register struct event	*e;
+    struct quad  *q;
+    int           i;
+    int           j;
+    struct event *e;
 
-        if (Ship.ship == QUEENE) {
-            printf("You may not abandon ye Faire Queene\n");
+    if (Ship.ship == QUEENE)
+    {
+        printf("You may not abandon ye Faire Queene\n");
+        return;
+    }
+    if (Ship.cond != DOCKED)
+    {
+        if (damaged(SHUTTLE))
+        {
+            out(SHUTTLE);
             return;
         }
-	if (Ship.cond != DOCKED)
-	{
-            if (damaged(SHUTTLE)) {
-                out(SHUTTLE);
+        printf("Officers escape in shuttlecraft\n");
+        /* decide on fate of crew */
+        q = &Quad[Ship.quadx][Ship.quady];
+        if (q->qsystemname == 0 || damaged(XPORTER))
+        {
+            printf("Entire crew of %d left to die in outer space\n", Ship.crew);
+            Game.deaths += Ship.crew;
+        }
+        else
+        {
+            printf("Crew beams down to planet %s\n", systemname(q));
+        }
+    }
+    /* see if you can be exchanged */
+    if (Now.bases == 0 || Game.captives < 20 * Game.skill)
+        lose(L_CAPTURED);
+    /* re-outfit new ship */
+    printf("You are hereby put in charge of an antiquated but still\n");
+    printf("  functional ship, the Fairie Queene.\n");
+    Ship.ship = QUEENE;
+    strncpy(Ship.shipname, "Fairie Queene", sizeof(Ship.shipname));
+    Ship.shipname[sizeof(Ship.shipname) - 1] = 0;
+    Param.energy = Ship.energy = 3000;
+    Param.torped = Ship.torped = 6;
+    Param.shield = Ship.shield = 1250;
+    Ship.shldup = 0;
+    Ship.cloaked = 0;
+    Ship.warp = 5.0;
+    Ship.warp2 = 25.0;
+    Ship.warp3 = 125.0;
+    Ship.cond = GREEN;
+    /* clear out damages on old ship */
+    for (i = 0; i < MAXEVENTS; i++)
+    {
+        e = &Event[i];
+        if (e->evcode != E_FIXDV)
+            continue;
+        unschedule(e);
+    }
+    /* get rid of some devices and redistribute probabilities */
+    i = Param.damprob[SHUTTLE] + Param.damprob[CLOAK];
+    Param.damprob[SHUTTLE] = Param.damprob[CLOAK] = 0;
+    while (i > 0)
+        for (j = 0; j < NDEV; j++)
+        {
+            if (Param.damprob[j] != 0)
+            {
+                Param.damprob[j] += 1;
+                i--;
+                if (i <= 0)
+                    break;
+            }
+        }
+    /* pick a starbase to restart at */
+    i = ranf(Now.bases);
+    Ship.quadx = Now.base[i].x;
+    Ship.quady = Now.base[i].y;
+    /* setup that quadrant */
+    while (1)
+    {
+        initquad(1);
+        Sect[Ship.sectx][Ship.secty] = EMPTY;
+        for (i = 0; i < 5; i++)
+        {
+            Ship.sectx = Etc.starbase.x + ranf(3) - 1;
+            if (Ship.sectx < 0 || Ship.sectx >= NSECTS)
+                continue;
+            Ship.secty = Etc.starbase.y + ranf(3) - 1;
+            if (Ship.secty < 0 || Ship.secty >= NSECTS)
+                continue;
+            if (Sect[Ship.sectx][Ship.secty] == EMPTY)
+            {
+                Sect[Ship.sectx][Ship.secty] = QUEENE;
+                dock();
+                compkldist(0);
                 return;
             }
-		printf("Officers escape in shuttlecraft\n");
-		/* decide on fate of crew */
-		q = &Quad[Ship.quadx][Ship.quady];
-		if (q->qsystemname == 0 || damaged(XPORTER))
-		{
-			printf("Entire crew of %d left to die in outer space\n",
-				Ship.crew);
-			Game.deaths += Ship.crew;
-		}
-		else
-		{
-			printf("Crew beams down to planet %s\n", systemname(q));
-		}
-	}
-	/* see if you can be exchanged */
-	if (Now.bases == 0 || Game.captives < 20 * Game.skill)
-		lose(L_CAPTURED);
-	/* re-outfit new ship */
-	printf("You are hereby put in charge of an antiquated but still\n");
-	printf("  functional ship, the Fairie Queene.\n");
-	Ship.ship = QUEENE;
-        strncpy(Ship.shipname, "Fairie Queene", sizeof(Ship.shipname));
-        Ship.shipname[sizeof(Ship.shipname) - 1] = 0;
-	Param.energy = Ship.energy = 3000;
-	Param.torped = Ship.torped = 6;
-	Param.shield = Ship.shield = 1250;
-	Ship.shldup = 0;
-	Ship.cloaked = 0;
-	Ship.warp = 5.0;
-	Ship.warp2 = 25.0;
-	Ship.warp3 = 125.0;
-	Ship.cond = GREEN;
-	/* clear out damages on old ship */
-	for (i = 0; i < MAXEVENTS; i++)
-	{
-		e = &Event[i];
-		if (e->evcode != E_FIXDV)
-			continue;
-		unschedule(e);
-	}
-	/* get rid of some devices and redistribute probabilities */
-	i = Param.damprob[SHUTTLE] + Param.damprob[CLOAK];
-	Param.damprob[SHUTTLE] = Param.damprob[CLOAK] = 0;
-	while (i > 0)
-		for (j = 0; j < NDEV; j++)
-		{
-			if (Param.damprob[j] != 0)
-			{
-				Param.damprob[j] += 1;
-				i--;
-				if (i <= 0)
-					break;
-			}
-		}
-	/* pick a starbase to restart at */
-	i = ranf(Now.bases);
-	Ship.quadx = Now.base[i].x;
-	Ship.quady = Now.base[i].y;
-	/* setup that quadrant */
-	while (1)
-	{
-		initquad(1);
-		Sect[Ship.sectx][Ship.secty] = EMPTY;
-		for (i = 0; i < 5; i++)
-		{
-			Ship.sectx = Etc.starbase.x + ranf(3) - 1;
-			if (Ship.sectx < 0 || Ship.sectx >= NSECTS)
-				continue;
-			Ship.secty = Etc.starbase.y + ranf(3) - 1;
-			if (Ship.secty < 0 || Ship.secty >= NSECTS)
-				continue;
-			if (Sect[Ship.sectx][Ship.secty] == EMPTY)
-			{
-				Sect[Ship.sectx][Ship.secty] = QUEENE;
-				dock();
-				compkldist(0);
-				return;
-			}
-		}
-	}
+        }
+    }
 }

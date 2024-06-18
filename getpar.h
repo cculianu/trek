@@ -35,27 +35,29 @@
 #ifndef TREK_GET_PAR_H
 #define TREK_GET_PAR_H
 
-typedef void(*cvntab_fn)(int);
+typedef void (*cvntab_fn)(int);
 
-struct cvntab		/* used for getcodpar() paramater list */
+/* used for getcodpar() paramater list */
+struct cvntab
 {
-        const char	*abrev;
-        const char	*full;
-        union {
-            cvntab_fn   func;
-            long long   value;
-        };
-	int	value2;
+    const char *abrev;
+    const char *full;
+    union
+    {
+        cvntab_fn func;
+        long long value;
+    };
+    int value2;
 };
 
-extern double getfltpar(char *s);
+extern double               getfltpar(char *s);
 extern const struct cvntab *getcodpar(const char *s, const struct cvntab tab[]);
-extern int getynpar(char* s);
-extern int getintpar(char* s);
-extern void getstrpar(char* s, char* r, int l, char* t);
+extern int                  getynpar(char *s);
+extern int                  getintpar(char *s);
+extern void                 getstrpar(char *s, char *r, int l, char *t);
 
 extern void skiptonl(char c);
-extern int testnl(void);
-extern int testterm(void);
-extern int readdelim(char d);
+extern int  testnl(void);
+extern int  testterm(void);
+extern int  readdelim(char d);
 #endif /* TREK_GET_PAR_H */

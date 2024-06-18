@@ -31,12 +31,9 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)win.c	5.5 (Berkeley) 6/26/90";
-#endif /* not lint */
+#include <setjmp.h>
 
-# include	"trek.h"
-# include	<setjmp.h>
+#include "trek.h"
 
 /*
 **  Signal game won
@@ -53,35 +50,35 @@ static char sccsid[] = "@(#)win.c	5.5 (Berkeley) 6/26/90";
 
 void win(void)
 {
-	long			s;
-	extern jmp_buf		env;
-	extern struct cvntab	Skitab[];
-	register struct cvntab	*p;
+    long                 s;
+    extern jmp_buf       env;
+    extern struct cvntab Skitab[];
+    struct cvntab       *p;
 
-        sleep_secs(1);
-	printf("\nCongratulations, you have saved the Federation\n");
-	Move.endgame = 1;
+    sleep_secs(1);
+    printf("\nCongratulations, you have saved the Federation\n");
+    Move.endgame = 1;
 
-	/* print and return the score */
-	s = score();
+    /* print and return the score */
+    s = score();
 
-	/* decide if she gets a promotion */
-	if (Game.helps == 0 && Game.killb == 0 && Game.killinhab == 0 && 5 * Game.kills + Game.deaths < 100 &&
-			s >= 1000 && Ship.ship == ENTERPRISE)
-	{
-		printf("In fact, you are promoted one step in rank,\n");
-		if (Game.skill >= 6)
-			printf("to the exalted rank of Commodore Emeritus\n");
-		else
-		{
-			p = &Skitab[Game.skill - 1];
-			printf("from %s%s ", p->abrev, p->full);
-			p++;
-			printf("to %s%s\n", p->abrev, p->full);
-		}
-	}
+    /* decide if she gets a promotion */
+    if (Game.helps == 0 && Game.killb == 0 && Game.killinhab == 0 && 5 * Game.kills + Game.deaths < 100 && s >= 1000
+        && Ship.ship == ENTERPRISE)
+    {
+        printf("In fact, you are promoted one step in rank,\n");
+        if (Game.skill >= 6)
+            printf("to the exalted rank of Commodore Emeritus\n");
+        else
+        {
+            p = &Skitab[Game.skill - 1];
+            printf("from %s%s ", p->abrev, p->full);
+            p++;
+            printf("to %s%s\n", p->abrev, p->full);
+        }
+    }
 
-	/* clean out input, and request new game */
-	skiptonl(0);
-	longjmp(env, 1);
+    /* clean out input, and request new game */
+    skiptonl(0);
+    longjmp(env, 1);
 }

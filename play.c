@@ -31,12 +31,9 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)play.c	5.6 (Berkeley) 6/26/90";
-#endif /* not lint */
+#include <setjmp.h>
 
-# include	"trek.h"
-# include	<setjmp.h>
+#include "trek.h"
 
 /*
 **  INSTRUCTION READ AND MAIN PLAY LOOP
@@ -49,6 +46,7 @@ static char sccsid[] = "@(#)play.c	5.6 (Berkeley) 6/26/90";
 **	on how we are doing after the move.
 */
 
+/* clang-format off */
 static void my_abandon(int i) { (void)i; abandon(); }
 static void my_capture(int i) { (void)i; capture(); }
 static void my_computer(int i) { (void)i; computer(); }
@@ -67,33 +65,33 @@ static void my_torped(int i) { (void)i; torped(); }
 static void my_undock(int i) { (void)i; undock(); }
 static void my_visual(int i) { (void)i; visual(); }
 static void my_setwarp(int i) { (void)i; setwarp(); }
+/* clang-format on */
 
-struct cvntab	Comtab[] =
-{
-    {"abandon",                 "",			{my_abandon},	0},
-    {"ca",			"pture",		{my_capture},	0},
-    {"cl",			"oak",			{shield},	-1},
-    {"c",			"omputer",		{my_computer},	0},
-    {"da",			"mages",		{my_dcrept},	0},
-    {"destruct",		"",			{my_destruct},	0},
-    {"do",			"ck",			{my_dock},	0},
-    {"help",			"",			{my_help},	0},
-    {"i",			"mpulse",		{my_impulse},	0},
-    {"l",			"rscan",		{my_lrscan},	0},
-    {"m",			"ove",			{my_warp},	0},
-    {"p",			"hasers",		{my_phaser},	0},
-    {"ram",			"",			{my_warp},	1},
-    {"dump",			"",			{my_dumpgame},	0},
-    {"r",			"est",			{my_rest},	0},
-    {"sh",			"ield",			{shield},	0},
-    {"s",			"rscan",		{srscan},	0},
-    {"st",			"atus",			{srscan},	-1},
-    {"terminate",		"",			{my_myreset},	0},
-    {"t",			"orpedo",		{my_torped},	0},
-    {"u",			"ndock",		{my_undock},	0},
-    {"v",			"isual",		{my_visual},	0},
-    {"w",			"arp",			{my_setwarp},	0},
-    {0, 0, {0}, 0},
+static struct cvntab Comtab[] = {
+    {"abandon",   "",        {my_abandon},  0 },
+    {"ca",        "pture",   {my_capture},  0 },
+    {"cl",        "oak",     {shield},      -1},
+    {"c",         "omputer", {my_computer}, 0 },
+    {"da",        "mages",   {my_dcrept},   0 },
+    {"destruct",  "",        {my_destruct}, 0 },
+    {"do",        "ck",      {my_dock},     0 },
+    {"help",      "",        {my_help},     0 },
+    {"i",         "mpulse",  {my_impulse},  0 },
+    {"l",         "rscan",   {my_lrscan},   0 },
+    {"m",         "ove",     {my_warp},     0 },
+    {"p",         "hasers",  {my_phaser},   0 },
+    {"ram",       "",        {my_warp},     1 },
+    {"dump",      "",        {my_dumpgame}, 0 },
+    {"r",         "est",     {my_rest},     0 },
+    {"sh",        "ield",    {shield},      0 },
+    {"s",         "rscan",   {srscan},      0 },
+    {"st",        "atus",    {srscan},      -1},
+    {"terminate", "",        {my_myreset},  0 },
+    {"t",         "orpedo",  {my_torped},   0 },
+    {"u",         "ndock",   {my_undock},   0 },
+    {"v",         "isual",   {my_visual},   0 },
+    {"w",         "arp",     {my_setwarp},  0 },
+    {0,           0,         {0},           0 },
 };
 
 void myreset(void)
@@ -105,7 +103,7 @@ void myreset(void)
 
 void play(void)
 {
-    const struct cvntab	*r;
+    const struct cvntab *r;
 
     while (1)
     {

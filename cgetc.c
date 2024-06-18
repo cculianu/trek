@@ -31,13 +31,6 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)cgetc.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
+#include <stdio.h>
 
-# include       <stdio.h>
-
-char    cgetc(void)
-{
-    return getchar();
-}
+char cgetc(void) { return getchar(); }

@@ -4,7 +4,7 @@ project(trek LANGUAGES C)
 
 add_executable(trek
     # Headers
-    getpar.h trek.h trek_funcs.h
+    getpar.h trek.h
 
     # Sources
     abandon.c
@@ -58,8 +58,6 @@ add_executable(trek
     warp.c
     win.c
 )
-
-target_compile_definitions(trek PRIVATE -Dlint)  # To suppress those static sccsid strings from the .c files.
 
 # Check that target machine has arc4random() (with Linux-specific hack to use libbsd).
 cmake_policy(PUSH)

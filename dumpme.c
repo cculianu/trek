@@ -31,11 +31,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)dumpme.c	5.4 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	"trek.h"
+#include "trek.h"
 
 /*
 **  Dump the starship somewhere in the galaxy
@@ -51,37 +47,34 @@ static char sccsid[] = "@(#)dumpme.c	5.4 (Berkeley) 6/1/90";
 
 void dumpme(int flag)
 {
-        int		f;
-        double		x = 0.;
-        struct event	*e = 0;
-        int		i = 0;
+    double        x;
+    struct event *e;
+    int           i;
 
-	f = flag;
-	Ship.quadx = ranf(NQUADS);
-	Ship.quady = ranf(NQUADS);
-	Ship.sectx = ranf(NSECTS);
-	Ship.secty = ranf(NSECTS);
-	x += 1.5 * franf();
-	Move.time += x;
-	if (f)
-	{
-		printf("%s falls into a black hole.\n", Ship.shipname);
-	}
-	else
-	{
-		printf("Computer applies full reverse power to avoid hitting the\n");
-		printf("   negative energy barrier.  A space warp was entered.\n");
-	}
-	/* bump repair dates forward */
-	for (i = 0; i < MAXEVENTS; i++)
-	{
-		e = &Event[i];
-		if (e->evcode != E_FIXDV)
-			continue;
-		reschedule(e, (e->date - Now.date) + x);
-	}
-	events(1);
-	printf("You are now in quadrant %d,%d.  It is stardate %.2f\n",
-		Ship.quadx, Ship.quady, Now.date);
-	Move.time = 0;
+    Ship.quadx = ranf(NQUADS);
+    Ship.quady = ranf(NQUADS);
+    Ship.sectx = ranf(NSECTS);
+    Ship.secty = ranf(NSECTS);
+    x = 1.5 * franf();
+    Move.time += x;
+    if (flag)
+    {
+        printf("%s falls into a black hole.\n", Ship.shipname);
+    }
+    else
+    {
+        printf("Computer applies full reverse power to avoid hitting the\n");
+        printf("   negative energy barrier.  A space warp was entered.\n");
+    }
+    /* bump repair dates forward */
+    for (i = 0; i < MAXEVENTS; i++)
+    {
+        e = &Event[i];
+        if (e->evcode != E_FIXDV)
+            continue;
+        reschedule(e, (e->date - Now.date) + x);
+    }
+    events(1);
+    printf("You are now in quadrant %d,%d.  It is stardate %.2f\n", Ship.quadx, Ship.quady, Now.date);
+    Move.time = 0;
 }

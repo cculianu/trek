@@ -31,35 +31,30 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)getpar.c	4.8 (Berkeley) 6/1/90";
-#endif /* not lint */
-
-# include	<stdio.h>
-# include	"trek.h"
-# include	"getpar.h"
+#include "getpar.h"
+#include "trek.h"
 
 /**
  **	get integer parameter
  **/
 
-int getintpar(char* s)
+int getintpar(char *s)
 {
-	register int	i;
-	int		n;
+    int i;
+    int n;
 
-	while (1)
-	{
-		if (testnl() && s)
-			printf("%s: ", s);
-		i = scanf("%d", &n);
-		if (i < 0)
-			exit(1);
-		if (i > 0 && testterm())
-			return (n);
-		printf("invalid input; please enter an integer\n");
-		skiptonl(0);
-	}
+    while (1)
+    {
+        if (testnl() && s)
+            printf("%s: ", s);
+        i = scanf("%d", &n);
+        if (i < 0)
+            exit(1);
+        if (i > 0 && testterm())
+            return n;
+        printf("invalid input; please enter an integer\n");
+        skiptonl(0);
+    }
 }
 
 /**
@@ -68,42 +63,40 @@ int getintpar(char* s)
 
 double getfltpar(char *s)
 {
-	register int		i;
-	double			d;
+    int    i;
+    double d;
 
-	while (1)
-	{
-		if (testnl() && s)
-			printf("%s: ", s);
-		i = scanf("%lf", &d);
-		if (i < 0)
-			exit(1);
-		if (i > 0 && testterm())
-			return (d);
-		printf("invalid input; please enter a double\n");
-		skiptonl(0);
-	}
+    while (1)
+    {
+        if (testnl() && s)
+            printf("%s: ", s);
+        i = scanf("%lf", &d);
+        if (i < 0)
+            exit(1);
+        if (i > 0 && testterm())
+            return d;
+        printf("invalid input; please enter a double\n");
+        skiptonl(0);
+    }
 }
 
 /**
  **	get yes/no parameter
  **/
 
-struct cvntab	Yntab[] =
-{
-        {"y",	"es",	{(cvntab_fn)1},	0},
-        {"n",	"o",	{(cvntab_fn)0},	0},
-        {0, 0, {0}, 0},
+static struct cvntab Yntab[] = {
+    {"y", "es", {(cvntab_fn)1}, 0},
+    {"n", "o",  {(cvntab_fn)0}, 0},
+    {0,   0,    {0},            0},
 };
 
-int getynpar(char* s)
+int getynpar(char *s)
 {
-        const struct cvntab *r;
+    const struct cvntab *r;
 
-	r = getcodpar(s, Yntab);
-        return (int)r->value;
+    r = getcodpar(s, Yntab);
+    return (int)r->value;
 }
-
 
 /**
  **	get coded parameter
@@ -111,103 +104,101 @@ int getynpar(char* s)
 
 const struct cvntab *getcodpar(const char *s, const struct cvntab tab[])
 {
-	char				input[100];
-        const struct cvntab		*r;
-	int				flag;
-        const char			*p, *q;
-	int				c;
-	int				f;
+    char                 input[100];
+    const struct cvntab *r;
+    int                  flag;
+    const char          *p, *q;
+    int                  c;
+    int                  f;
 
-	flag = 0;
-	while (1)
-	{
-		flag |= (f = testnl());
-		if (flag)
-			printf("%s: ", s);
-		if (f)
-			cgetc();		/* throw out the newline */
-		scanf("%*[ \t;]");
-		if ((c = scanf("%[^ \t;\n]", input)) < 0)
-			exit(1);
-		if (c == 0)
-			continue;
-		flag = 1;
+    flag = 0;
+    while (1)
+    {
+        flag |= (f = testnl());
+        if (flag)
+            printf("%s: ", s);
+        if (f)
+            cgetc(); /* throw out the newline */
+        scanf("%*[ \t;]");
+        if ((c = scanf("%[^ \t;\n]", input)) < 0)
+            exit(1);
+        if (c == 0)
+            continue;
+        flag = 1;
 
-		/* if command list, print four per line */
-		if (input[0] == '?' && input[1] == 0)
-		{
-			c = 4;
-			for (r = tab; r->abrev; r++)
-			{
-				concat(r->abrev, r->full, input);
-				printf("%14.14s", input);
-				if (--c > 0)
-					continue;
-				c = 4;
-				printf("\n");
-			}
-			if (c != 4)
-				printf("\n");
-			continue;
-		}
+        /* if command list, print four per line */
+        if (input[0] == '?' && input[1] == 0)
+        {
+            c = 4;
+            for (r = tab; r->abrev; r++)
+            {
+                concat(r->abrev, r->full, input);
+                printf("%14.14s", input);
+                if (--c > 0)
+                    continue;
+                c = 4;
+                printf("\n");
+            }
+            if (c != 4)
+                printf("\n");
+            continue;
+        }
 
-		/* search for in table */
-		for (r = tab; r->abrev; r++)
-		{
-			p = input;
-			for (q = r->abrev; *q; q++)
-				if (*p++ != *q)
-					break;
-			if (!*q)
-			{
-				for (q = r->full; *p && *q; q++, p++)
-					if (*p != *q)
-						break;
-				if (!*p || !*q)
-					break;
-			}
-		}
+        /* search for in table */
+        for (r = tab; r->abrev; r++)
+        {
+            p = input;
+            for (q = r->abrev; *q; q++)
+                if (*p++ != *q)
+                    break;
+            if (! *q)
+            {
+                for (q = r->full; *p && *q; q++, p++)
+                    if (*p != *q)
+                        break;
+                if (! *p || ! *q)
+                    break;
+            }
+        }
 
-		/* check for not found */
-		if (!r->abrev)
-		{
-			printf("invalid input; ? for valid inputs\n");
-			skiptonl(0);
-		}
-		else
-                        return r;
-	}
+        /* check for not found */
+        if (! r->abrev)
+        {
+            printf("invalid input; ? for valid inputs\n");
+            skiptonl(0);
+        }
+        else
+            return r;
+    }
 }
-
 
 /**
  **	get string parameter
  **/
 
-void getstrpar(char* s, char* r, int l, char* t)
+void getstrpar(char *s, char *r, int l, char *t)
 {
-	register int	i;
-	char		format[20];
-	register int	f;
+    int  i;
+    char format[20];
+    int  f;
 
-	if (t == 0)
-		t = " \t\n;";
-	(void)sprintf(format, "%%%d[^%s]", l, t);
-	while (1)
-	{
-		if ((f = testnl()) && s)
-			printf("%s: ", s);
-		if (f)
-			cgetc();
-		scanf("%*[\t ;]");
-		i = scanf(format, r);
-		if (i < 0)
-			exit(1);
-		if (i != 0)
-			return;
-	}
+    if (t == 0)
+        t = " \t\n;";
+    (void)sprintf(format, "%%%d[^%s]", l, t);
+    while (1)
+    {
+        if ((f = testnl()) && s)
+            printf("%s: ", s);
+        if (f)
+            cgetc();
+        scanf("%*[\t ;]");
+        i = scanf(format, r);
+        if (i < 0)
+            exit(1);
+        if (i != 0)
+            return;
+    }
 }
-
 
 /**
  **	test if newline is next valid character
@@ -215,20 +206,18 @@ void getstrpar(char* s, char* r, int l, char* t)
 
 int testnl(void)
 {
-	register char		c;
+    char c;
 
-	while ((c = cgetc()) != '\n')
-		if ((c >= '0' && c <= '9') || c == '.' || c == '!' ||
-				(c >= 'A' && c <= 'Z') ||
-				(c >= 'a' && c <= 'z') || c == '-')
-		{
-			ungetc(c, stdin);
-			return(0);
-		}
-	ungetc(c, stdin);
-	return (1);
+    while ((c = cgetc()) != '\n')
+        if ((c >= '0' && c <= '9') || c == '.' || c == '!' || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+            || c == '-')
+        {
+            ungetc(c, stdin);
+            return 0;
+        }
+    ungetc(c, stdin);
+    return 1;
 }
-
 
 /**
  **	scan for newline
@@ -236,13 +225,12 @@ int testnl(void)
 
 void skiptonl(char c)
 {
-	while (c != '\n')
-		if (!(c = cgetc()))
-			return;
-	ungetc('\n', stdin);
-	return;
+    while (c != '\n')
+        if (! (c = cgetc()))
+            return;
+    ungetc('\n', stdin);
+    return;
 }
-
 
 /**
  **	test for valid terminator
@@ -250,17 +238,16 @@ void skiptonl(char c)
 
 int testterm(void)
 {
-	register char		c;
+    char c;
 
-	if (!(c = cgetc()))
-		return (1);
-	if (c == '.')
-		return (0);
-	if (c == '\n' || c == ';')
-		ungetc(c, stdin);
-	return (1);
+    if (! (c = cgetc()))
+        return 1;
+    if (c == '.')
+        return 0;
+    if (c == '\n' || c == ';')
+        ungetc(c, stdin);
+    return 1;
 }
-
 
 /*
 **  TEST FOR SPECIFIED DELIMETER
