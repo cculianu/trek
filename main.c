@@ -44,6 +44,7 @@ static char sccsid[] = "@(#)main.c	5.7 (Berkeley) 2/28/91";
 # include	"trek.h"
 /* Non-portable: # include	<sgtty.h> */
 # include	<setjmp.h>
+# include       <time.h>
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
@@ -153,7 +154,6 @@ jmp_buf env;
 
 int main(int argc, char* *argv)
 {
-        /* time_t			now; <-- UNUSED, left in for historical purposes */
 	/* extern FILE		*f_log; */
         /* char		opencode = 'w'; <--- UNUSED, left in for historical purposes */
         /* This is not used: int        prio = PRIO;*/
@@ -164,10 +164,9 @@ int main(int argc, char* *argv)
 	av = argv;
 	ac = argc;
 	av++;
-        /* UNUSED: We use arc4random() now which is better (see ranf.c)
-        time(&now);
-        srand(now);
-        */
+        /* Normally we don't use rand() unless in tournament mode or if we are missing arc4random().. but seed
+         * rand() anyway. */
+        srand(time(NULL));
 /* Comment out this ancient non-portable crap.  It should use termios anyway.
 #ifdef linux
 	if (ioctl(1, TIOCGETP, &argp) == 0)

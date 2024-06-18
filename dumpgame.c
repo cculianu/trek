@@ -147,7 +147,7 @@ int restartgame(void)
         ret = 0;
     }
 
-    fclose(fin);
+    if (fin) fclose(fin);
     return ret;
 }
 

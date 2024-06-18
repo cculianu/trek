@@ -35,48 +35,33 @@
 static char sccsid[] = "@(#)ranf.c	5.4 (Berkeley) 6/1/90";
 #endif /* not lint */
 
-# include       <stdint.h>
-# include       <stdlib.h>
-#ifdef USE_LIBBSD
-# include       <bsd/stdlib.h> /* For arc4random() */
-#endif
+#include       <stdint.h>
+#include       <stdlib.h>
+#  ifdef USE_LIBBSD /* Linux has this defined */
+#    include       <bsd/stdlib.h> /* For arc4random() */
+#  endif
 
-#ifdef _WIN32
-/* Sadly, win32 API lacks arc4random() and it gets complicated to use the
- * win32 random number generator.. so we fall-back to rand() */
-#include <time.h>
+#include "trek.h"
 
-static int get_rand_int(void)
-{
-    static uint8_t seeded = 0;
-    if (!seeded) {
-        srand((unsigned int)time(NULL));
-        seeded = 1;
-    }
-    return rand();
-}
-
-int ranf(int max)
-{
-    if (max <= 0) return 0;
-    return get_rand_int() % max;
-}
-
-double franf(void)
-{
-    return get_rand_int() / (double)RAND_MAX;
-}
-#else
 int ranf(int max)
 {
     if (max <= 0)
         return 0;
-    return arc4random_uniform((uint32_t)max);
+#ifdef HAVE_ARC4RANDOM
+    /* In tournament mode; we don't use arc4random() since we want determinism. */
+    if (! Game.tourn)
+        return arc4random_uniform((uint32_t)max);
+#endif
+    return rand() % max;
 }
 
 
 double franf(void)
 {
-    return arc4random() / (double)0xffffffffu;
-}
+#ifdef HAVE_ARC4RANDOM
+    /* In tournament mode; we don't use arc4random() since we want determinism. */
+    if (! Game.tourn)
+        return arc4random() / (double)0xffffffffu;
 #endif
+    return rand() / (double)RAND_MAX;
+}

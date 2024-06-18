@@ -102,7 +102,7 @@ void setup(void)
 		d = 0;
 		for (i = 0; Game.passwd[i]; i++)
 			d += Game.passwd[i] << i;
-		srand(d);
+                srand(d);
 	}
 	Param.bases = Now.bases = ranf(6 - Game.skill) + 2;
 	if (Game.skill == 6)
