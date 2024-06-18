@@ -48,18 +48,17 @@ static char sccsid[] = "@(#)events.c	5.4 (Berkeley) 6/1/90";
 
 int events(int warp /* set if called in a time warp */)
 {
-	register int		i;
-	int			j;
-	struct kling		*k;
-	double			rtime;
-	double			xdate;
-	double			idate;
-        struct event		*ev;
-	int			ix, iy;
-	register struct quad	*q;
-	register struct event	*e;
-	int			evnum;
-	int			restcancel;
+        int                     i;
+        int			j;
+        struct kling		*k;
+        double			rtime;
+        double			xdate;
+        double			idate;
+        int			ix, iy;
+        struct quad             *q;
+        struct event            *e, *ev = NULL;
+        int			evnum;
+        int			restcancel;
         char *tmps;
 
 	/* if nothing happened, just allow for any Klingons killed */
@@ -96,11 +95,11 @@ int events(int warp /* set if called in a time warp */)
 			if (e->date < xdate)
 			{
 				xdate = e->date;
-				ev = e;
+                                ev = e;
 				evnum = i;
 			}
 		}
-		e = ev;
+                e = ev;
 
 		/* find the time between events */
 		rtime = xdate - Now.date;

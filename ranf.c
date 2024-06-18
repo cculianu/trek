@@ -41,6 +41,32 @@ static char sccsid[] = "@(#)ranf.c	5.4 (Berkeley) 6/1/90";
 # include       <bsd/stdlib.h> /* For arc4random() */
 #endif
 
+#ifdef _WIN32
+/* Sadly, win32 API lacks arc4random() and it gets complicated to use the
+ * win32 random number generator.. so we fall-back to rand() */
+#include <time.h>
+
+static int get_rand_int(void)
+{
+    static uint8_t seeded = 0;
+    if (!seeded) {
+        srand((unsigned int)time(NULL));
+        seeded = 1;
+    }
+    return rand();
+}
+
+int ranf(int max)
+{
+    if (max <= 0) return 0;
+    return get_rand_int() % max;
+}
+
+double franf(void)
+{
+    return get_rand_int() / (double)RAND_MAX;
+}
+#else
 int ranf(int max)
 {
     if (max <= 0)
@@ -53,3 +79,4 @@ double franf(void)
 {
     return arc4random() / (double)0xffffffffu;
 }
+#endif
