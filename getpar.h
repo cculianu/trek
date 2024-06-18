@@ -43,7 +43,7 @@ struct cvntab		/* used for getcodpar() paramater list */
         const char	*full;
         union {
             cvntab_fn   func;
-            long        value;
+            long long   value;
         };
 	int	value2;
 };
