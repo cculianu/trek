@@ -137,7 +137,9 @@
 ***********************************************************************
 */
 
-/* UNUSED: #define PRIO 00 */ /* default priority */
+/* UNUSED:
+#define PRIO 00 / * default priority * /
+*/
 
 int Mother = 51 + (51 << 8);
 
@@ -145,39 +147,39 @@ jmp_buf env;
 
 int main(int argc, char **argv)
 {
-    /* extern FILE		*f_log; */
-    /* char		opencode = 'w'; <--- UNUSED, left in for historical purposes */
-    /* This is not used: int        prio = PRIO;*/
+    /* extern FILE  *f_log;          <--- UNUSED, left in for historical purposes */
+    /* char          opencode = 'w'; <--- UNUSED, left in for historical purposes */
+    /* int           prio = PRIO;    <--- UNUSED, left in for historical purposes */
+    /* struct sgttyb argp;           <--- non-portable - see below */
     int    ac;
     char **av;
-    /* struct	sgttyb		argp; */ /*non-portable - see below */
 
     av = argv;
     ac = argc;
     av++;
-    /* Normally we don't use rand() unless in tournament mode or if we are missing arc4random().. but seed
-     * rand() anyway. */
+    /* Normally we don't use rand() unless in tournament mode or if we are
+       missing arc4random().. but seed rand() anyway. */
     srand(time(NULL));
     /* Comment out this ancient non-portable crap.  It should use termios anyway.
-    #ifdef linux
-            if (ioctl(1, TIOCGETP, &argp) == 0)
-    #else
-            if (gtty(1, &argp) == 0)
-    #endif
-            {
-                    if ((argp.sg_ispeed ) < B1200)
-                            Etc.fast++;
-            }
+#   ifdef linux
+    if (ioctl(1, TIOCGETP, &argp) == 0)
+#   else
+    if (gtty(1, &argp) == 0)
+#   endif
+    {
+        if ((argp.sg_ispeed ) < B1200)
+            Etc.fast++;
+    }
     */
     while (ac > 1 && av[0][0] == '-')
     {
         switch (av[0][1])
         {
-                /* UNUSED
+        /* UNUSED:
             case 'a':	/ * append to log file * /
                 opencode = 'a';
                 break;
-                */
+        */
             case 'f': /* set fast mode */
                 Etc.fast++;
                 break;
@@ -194,13 +196,13 @@ int main(int argc, char **argv)
                 break;
 #    endif
 #endif
-                /* UNUSED
-                                  case 'p':	/ * set priority * /
-                                        if (getuid() != Mother)
-                                                goto badflag;
-                                        prio = atoi(av[0] + 2);
-                                        break;
-                */
+        /* UNUSED:
+            case 'p':	/ * set priority * /
+                if (getuid() != Mother)
+                        goto badflag;
+                prio = atoi(av[0] + 2);
+                break;
+        */
             default:
 #if HAVE_UNISTD_H
             badflag:
@@ -213,8 +215,8 @@ int main(int argc, char **argv)
     if (ac > 2)
         syserr("arg count");
     /*
-if (ac > 1)
-    f_log = fopen(av[0], opencode);
+    if (ac > 1)
+        f_log = fopen(av[0], opencode);
     */
 
     printf("\n   * * *   S T A R   T R E K   * * *\n\nPress return to continue.\n");
