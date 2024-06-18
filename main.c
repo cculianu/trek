@@ -175,11 +175,12 @@ int main(int argc, char **argv)
     {
         switch (av[0][1])
         {
-        /* UNUSED:
-            case 'a':	/ * append to log file * /
+#if 0
+            /* UNUSED */
+            case 'a':	/* append to log file */
                 opencode = 'a';
                 break;
-        */
+#endif
             case 'f': /* set fast mode */
                 Etc.fast++;
                 break;
@@ -196,13 +197,14 @@ int main(int argc, char **argv)
                 break;
 #    endif
 #endif
-        /* UNUSED:
-            case 'p':	/ * set priority * /
+#if 0
+            /* UNUSED */
+            case 'p':	/* set priority */
                 if (getuid() != Mother)
                         goto badflag;
                 prio = atoi(av[0] + 2);
                 break;
-        */
+#endif
             default:
 #if HAVE_UNISTD_H
             badflag:

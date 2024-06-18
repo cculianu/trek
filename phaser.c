@@ -66,7 +66,7 @@
 **	Uses trace flag 30
 */
 
-static struct cvntab Matab[] = {
+static const struct cvntab Matab[] = {
     {"m", "anual",    {(cvntab_fn)1}, 0},
     {"a", "utomatic", {0},            0},
     {0,   0,          {0},            0},

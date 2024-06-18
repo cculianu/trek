@@ -79,7 +79,7 @@
 **	command processor.
 */
 
-struct cvntab Cputab[] = {
+static const struct cvntab Cputab[] = {
     {"ch", "art",         {(cvntab_fn)1}, 0},
     {"t",  "rajectory",   {(cvntab_fn)2}, 0},
     {"c",  "ourse",       {(cvntab_fn)3}, 0},

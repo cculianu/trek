@@ -52,14 +52,14 @@ static const char *Color[4] = {"GREEN", "DOCKED", "YELLOW", "RED"};
 
 void srscan(int f)
 {
-    int                  i, j;
-    int                  statinfo;
-    char                *s;
-    int                  percent;
-    struct quad         *q;
-    extern struct cvntab Skitab[];
-    extern struct cvntab Lentab[];
-    struct cvntab       *p;
+    int                        i, j;
+    int                        statinfo;
+    char                      *s;
+    int                        percent;
+    struct quad               *q;
+    extern const struct cvntab Skitab[];
+    extern const struct cvntab Lentab[];
+    const struct cvntab       *p;
 
     if (f >= 0 && check_out(SRSCAN))
     {

@@ -39,11 +39,11 @@
 
 long score(void)
 {
-    int                  u;
-    int                  t;
-    long                 s;
-    double               r;
-    extern struct cvntab Skitab[];
+    int                        u;
+    int                        t;
+    long                       s;
+    double                     r;
+    extern const struct cvntab Skitab[];
 
     printf("\n*** Your score:\n");
     s = t = Param.klingpwr / 4 * (u = Game.killk);

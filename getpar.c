@@ -84,7 +84,7 @@ double getfltpar(char *s)
  **	get yes/no parameter
  **/
 
-static struct cvntab Yntab[] = {
+static const struct cvntab Yntab[] = {
     {"y", "es", {(cvntab_fn)1}, 0},
     {"n", "o",  {(cvntab_fn)0}, 0},
     {0,   0,    {0},            0},

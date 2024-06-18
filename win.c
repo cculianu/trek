@@ -50,10 +50,10 @@
 
 void win(void)
 {
-    long                 s;
-    extern jmp_buf       env;
-    extern struct cvntab Skitab[];
-    struct cvntab       *p;
+    long                       s;
+    extern jmp_buf             env;
+    extern const struct cvntab Skitab[];
+    const struct cvntab       *p;
 
     sleep_secs(1);
     printf("\nCongratulations, you have saved the Federation\n");

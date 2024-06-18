@@ -50,7 +50,7 @@
 **	so you get partial hits.
 */
 
-static struct cvntab Udtab[] = {
+static const struct cvntab Udtab[] = {
     {"u", "p",   {(cvntab_fn)1}, 0},
     {"d", "own", {(cvntab_fn)0}, 0},
     {0,   0,     {0},            0},

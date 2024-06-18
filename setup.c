@@ -44,7 +44,7 @@
 **	Game restart and tournament games are handled here.
 */
 
-struct cvntab Lentab[] = {
+const struct cvntab Lentab[] = {
     {"s",       "hort",  {(cvntab_fn)1}, 0},
     {"m",       "edium", {(cvntab_fn)2}, 0},
     {"l",       "ong",   {(cvntab_fn)4}, 0},
@@ -52,7 +52,7 @@ struct cvntab Lentab[] = {
     {0,         0,       {0},            0},
 };
 
-struct cvntab Skitab[] = {
+const struct cvntab Skitab[] = {
     {"n", "ovice",     {(cvntab_fn)1}, 0},
     {"f", "air",       {(cvntab_fn)2}, 0},
     {"g", "ood",       {(cvntab_fn)3}, 0},

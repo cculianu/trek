@@ -67,7 +67,7 @@ static void my_visual(int i) { (void)i; visual(); }
 static void my_setwarp(int i) { (void)i; setwarp(); }
 /* clang-format on */
 
-static struct cvntab Comtab[] = {
+static const struct cvntab Comtab[] = {
     {"abandon",   "",        {my_abandon},  0 },
     {"ca",        "pture",   {my_capture},  0 },
     {"cl",        "oak",     {shield},      -1},
