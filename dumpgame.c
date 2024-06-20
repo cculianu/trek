@@ -191,11 +191,11 @@ void serialize_S_Now(void *dest, const struct S_Now *src)
     for (i = 0; i < (size_t)NEVENTS; ++i)
     {
         size_t idx = INVALID_EVT_IDX;
-        if (tmp.eventptr[i])
-            idx = tmp.eventptr[i] - &Event[0];
+        if (tmp.u.eventptr[i])
+            idx = tmp.u.eventptr[i] - &Event[0];
         if (idx >= (size_t)MAXEVENTS)
             idx = INVALID_EVT_IDX;
-        tmp.eventidx[i] = idx;
+        tmp.u.eventidx[i] = idx;
     }
 
     memcpy(dest, &tmp, sizeof(tmp));
@@ -210,14 +210,14 @@ void unserialize_S_Now(struct S_Now *dest, const void *src)
 
     for (i = 0; i < NEVENTS; ++i)
     {
-        const size_t idx = tmp.eventidx[i];
+        const size_t idx = tmp.u.eventidx[i];
         if (idx != INVALID_EVT_IDX && idx < MAXEVENTS)
         {
-            tmp.eventptr[i] = &Event[idx];
+            tmp.u.eventptr[i] = &Event[idx];
         }
         else
         {
-            tmp.eventptr[i] = 0;
+            tmp.u.eventptr[i] = 0;
         }
     }
 

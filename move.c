@@ -103,11 +103,11 @@ double move(int ramflag, int course, double time, double speed)
 
     /* check for long range tractor beams */
     /****  TEMPORARY CODE == DEBUGGING  ****/
-    evtime = Now.eventptr[E_LRTB]->date - Now.date;
+    evtime = Now.u.eventptr[E_LRTB]->date - Now.date;
 #ifdef xTRACE
     if (Trace)
-        printf("E.ep = %p, ->evcode = %d, ->date = %.2f, evtime = %.2f\n", (void *)Now.eventptr[E_LRTB],
-               Now.eventptr[E_LRTB]->evcode, Now.eventptr[E_LRTB]->date, evtime);
+        printf("E.ep = %p, ->evcode = %d, ->date = %.2f, evtime = %.2f\n", (void *)Now.u.eventptr[E_LRTB],
+               Now.u.eventptr[E_LRTB]->evcode, Now.u.eventptr[E_LRTB]->date, evtime);
 #endif
     if (time > evtime && Etc.nkling < 3)
     {

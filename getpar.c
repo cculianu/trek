@@ -95,7 +95,7 @@ int getynpar(char *s)
     const struct cvntab *r;
 
     r = getcodpar(s, Yntab);
-    return (int)r->value;
+    return (int)r->u.value;
 }
 
 /**

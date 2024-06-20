@@ -66,7 +66,7 @@ void rest(void)
     Move.time = t;
 
     /* boundary condition is the LRTB */
-    t = Now.eventptr[E_LRTB]->date - Now.date;
+    t = Now.u.eventptr[E_LRTB]->date - Now.date;
     if (Ship.cond != DOCKED && Move.time > t)
         Move.time = t + 0.0001;
     Move.free = 0;

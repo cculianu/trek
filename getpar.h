@@ -48,7 +48,7 @@ struct cvntab
     {
         cvntab_fn func;
         ptrdiff_t value;
-    };
+    } u;
     int value2;
 };
 

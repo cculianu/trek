@@ -114,7 +114,7 @@ void play(void)
         Move.resting = 0;
         skiptonl(0);
         r = getcodpar("\nCommand", Comtab);
-        (*r->func)(r->value2);
+        (*r->u.func)(r->value2);
         events(0);
         attack(0);
         checkcond();

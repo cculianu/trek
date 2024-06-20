@@ -65,7 +65,7 @@ struct event *schedule(int type, double offset, int x, int y, int z)
         e->x = x;
         e->y = y;
         e->systemname = z;
-        Now.eventptr[type] = e;
+        Now.u.eventptr[type] = e;
         return e;
     }
     syserr("Cannot schedule event %d parm %d %d %d", type, x, y, z);
@@ -104,7 +104,7 @@ void unschedule(struct event *e)
         printf("unschedule: type %d @ %.2f parm %d %d %d\n", e->evcode, e->date, (int)e->x, (int)e->y,
                (int)e->systemname);
 #endif
-    Now.eventptr[e->evcode & E_EVENT] = 0;
+    Now.u.eventptr[e->evcode & E_EVENT] = 0;
     e->date = 1e50;
     e->evcode = 0;
     return;

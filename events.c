@@ -429,7 +429,7 @@ int events(int warp /* set if called in a time warp */)
     }
 
     /* unschedule an attack during a rest period */
-    if ((e = Now.eventptr[E_ATTACK]))
+    if ((e = Now.u.eventptr[E_ATTACK]))
         unschedule(e);
 
     if (! warp)

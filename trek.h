@@ -336,7 +336,7 @@ extern struct S_Now
     {
         struct event *eventptr[NEVENTS]; /* pointer to event structs */
         size_t        eventidx[NEVENTS]; /* Offset from Event[0] base (serialization only) */
-    };
+    } u;
     struct xy base[MAXBASES]; /* locations of starbases */
 } Now;
 
